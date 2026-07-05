@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Hub - Pharmacy Products</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Pharmacy_products.CSS">
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+</head>
+<body>
+
+   <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <img src="assets/images/logo.png" alt="Logo" class="logo-img">
+                <h1>MEDICAL HUB <span>.com</span></h1>
+                </div>
+            <div class="ph-header-title">Everything You Need for Better Health</div>
+        </div>
+    </header>
+
+    <main class="php-main">
+
+        <div class="php-search-wrap">
+            <div class="php-search-box">
+                <svg class="php-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2a6496" stroke-width="2.5">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" placeholder="Research " id="php-search-input">
+            </div>
+        </div>
+
+        <div class="php-grid-wrap">
+            <div class="php-cat-title" id="php-cat-title">Face and body care</div>
+            
+            <div class="php-grid">
+
+                <div class="php-card" data-id="1" data-name="Children's replacement mask for inhaler" data-price="25">
+                    <div class="php-card-row">
+                        <img src="assets/images/Screenshot 2026-06-14 181039.png" alt="Product">
+                        <span class="php-price">25 EGP</span>
+                    </div>
+                    <button class="php-add-btn" onclick="addToCart(this)">Add</button>
+                </div>
+
+                <div class="php-card" data-id="2" data-name="Garnier Pure Active Face Wash" data-price="80">
+                    <div class="php-card-row">
+                        <img src="assets/images/Screenshot 2026-06-14 181050.png" alt="Product">
+                        <span class="php-price">80 EGP</span>
+                    </div>
+                    <button class="php-add-btn" onclick="addToCart(this)">Add</button>
+                </div>
+
+                <div class="php-card" data-id="3" data-name="Hand Sanitizer Gel" data-price="35">
+                    <div class="php-card-row">
+                        <img src="assets/images/Screenshot 2026-06-14 181058.png" alt="Product">
+                        <span class="php-price">35 EGP</span>
+                    </div>
+                    <button class="php-add-btn" onclick="addToCart(this)">Add</button>
+                </div>
+
+                <div class="php-card" data-id="4" data-name="Mesh Nebulizer Inhaler Machine" data-price="900">
+                    <div class="php-card-row">
+                        <img src="assets/images/154741 1.png" alt="Product">
+                        <span class="php-price">900 EGP</span>
+                    </div>
+                    <button class="php-add-btn" onclick="addToCart(this)">Add</button>
+                </div>
+
+                <div class="php-card" data-id="5" data-name="Vitamin C Sheet Mask" data-price="80">
+                    <div class="php-card-row">
+                        <img src="assets/images/0475532b-493e-44e9-b535-643f2b9ff41e 1.png" alt="Product">
+                        <span class="php-price">80 EGP</span>
+                    </div>
+                    <button class="php-add-btn" onclick="addToCart(this)">Add</button>
+                </div>
+
+                <div class="php-card" data-id="6" data-name="Pomegranate Hydrating Mask" data-price="40">
+                    <div class="php-card-row">
+                        <img src="assets/images/Screenshot 2026-06-14 181136.png" alt="Product">
+                        <span class="php-price">40 EGP</span>
+                    </div>
+                    <button class="php-add-btn" onclick="addToCart(this)">Add</button>
+                </div>
+
+                <div class="php-card" data-id="7" data-name="St. Ives Hydrating Wash" data-price="80">
+                    <div class="php-card-row">
+                        <img src="assets/images/Screenshot 2026-06-14 181128.png" alt="Product">
+                        <span class="php-price">80 EGP</span>
+                    </div>
+                    <button class="php-add-btn" onclick="addToCart(this)">Add</button>
+                </div>
+
+                <div class="php-card" data-id="8" data-name="Red Algae Clay Mask" data-price="70">
+                    <div class="php-card-row">
+                        <img src="assets/images/Screenshot 2026-06-14 181122.png" alt="Product">
+                        <span class="php-price">70 EGP</span>
+                    </div>
+                    <button class="php-add-btn" onclick="addToCart(this)">Add</button>
+                </div>
+
+                <div class="php-card" data-id="9" data-name="Moisturizing Cream Jar" data-price="120">
+                    <div class="php-card-row">
+                        <img src="assets/images/Screenshot 2026-06-14 181114.png" alt="Product">
+                        <span class="php-price">120 EGP</span>
+                    </div>
+                    <button class="php-add-btn" onclick="addToCart(this)">Add</button>
+                </div>
+
+                <div class="php-card" data-id="10" data-name="Collagen Pink Mask" data-price="80">
+                    <div class="php-card-row">
+                        <img src="assets/images/Screenshot 2026-06-14 181106.png" alt="Product">
+                        <span class="php-price">80 EGP</span>
+                    </div>
+                    <button class="php-add-btn" onclick="addToCart(this)">Add</button>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="ph-footer">
+        <p>Download Medical Hub App now, add promocode PH15 and get<br>
+        the widest coverage, real time order tracking and a hassle-free<br>
+        experience-all in one app</p>
+        <div class="gplay-wrapper">
+            <a href="#" class="ph-gplay-btn">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play">
+            </a>
+        </div>
+    </footer>
+
+   <script>
+    function addToCart(btn) {
+        // 1. تحديد الكارت الذي تم الضغط عليه
+        const card = btn.closest('.php-card');
+        
+        // 2. سحب الصورة والسعر تلقائياً من عناصر الكارت لمنع الـ NaN
+        const img = card.querySelector('.php-card-row img').getAttribute('src');
+        const priceText = card.querySelector('.php-price').textContent;
+        const price = parseInt(priceText.replace(/[^0-9]/g, '')); // استخراج الرقم فقط
+        
+        // 3. تحديد اسم افتراضي أو جلب اسم المنتج
+        const name = card.querySelector('img').getAttribute('alt') || 'Medical Product';
+
+        // 4. تخزين البيانات كاملة بالـ LocalStorage لتستلمها صفحة السلة بنجاح
+        const productData = { 
+            id: Date.now(), 
+            name: name, 
+            basePrice: price, 
+            img: img, 
+            quantity: 1 
+        };
+        localStorage.setItem('selectedProduct', JSON.stringify(productData));
+
+        // 5. تأثير إضافة المنتج البصري
+        btn.textContent = '✓ Added';
+        btn.classList.add('added');
+
+        // 6. التوجيه التلقائي المباشر لصفحة السلة
+        setTimeout(() => {
+            window.location.href = 'cart.html';
+        }, 400);
+    }
+
+    // لتخصيص الهيدر بناءً على الكاتيجوري القادم من الروابط
+    const params = new URLSearchParams(window.location.search);
+    const cat = params.get('category');
+    if (cat) {
+        document.getElementById('php-cat-title').textContent = cat;
+        document.getElementById('php-search-input').placeholder = 'Search in ' + cat;
+    }
+    </script>
+</body>
+</html>

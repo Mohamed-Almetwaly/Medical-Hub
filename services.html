@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Hub - Medical Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="services.css">
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <style>
+        .header-right-icons .icon-item {
+            text-decoration: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: #8c9baf;
+            font-size: 12px;
+            font-weight: 700;
+            font-family: 'Mulish', sans-serif;
+            transition: color 0.2s;
+        }
+        .header-right-icons .icon-item:hover { color: #ffffff; }
+        .header-right-icons .icon-item.active-link { color: #ffffff; }
+        .header-right-icons .icon-item svg { width: 26px; height: 26px; }
+    </style>
+</head>
+<body>
+
+    <header class="inner-header">
+        <div class="inner-header-container">
+            <div class="header-left">
+                <img src="assets/images/logo.png" alt="Logo" class="logo-img">
+                <div style="display:flex; flex-direction:column; line-height:1.3;">
+                    <span class="page-title">Medical Services</span>
+                    <span id="welcome-user" style="font-size:12px; color:#8c9baf; font-weight:600; font-family:'Mulish',sans-serif;"></span>
+                </div>
+            </div>
+            <div class="header-right-icons">
+                <a href="ask.html" class="icon-item">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    <span>Ask?</span>
+                </a>
+                <a href="my-activity.html" class="icon-item">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    <span>My Activity</span>
+                </a>
+                <a href="profile.html" class="icon-item">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <span>Profile</span>
+                </a>
+                <a href="alerts.html" class="icon-item">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                    <span>Alerts</span>
+                </a>
+                <a href="#" id="logout-btn" class="icon-item">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="services-content">
+        <div class="services-list">
+
+            <div class="service-card">
+                <div class="service-main-info">
+                    <img src="assets/images/laboratory.png" alt="Laboratory" class="service-icon">
+                    <span class="service-text">Laboratory</span>
+                </div>
+                <a href="laboratory.html" class="see-details-btn" style="text-decoration: none; text-align: center;">See Details</a>
+            </div>
+
+            <div class="service-card">
+                <div class="service-main-info">
+                    <img src="assets/images/booking.png" alt="Booking" class="service-icon">
+                    <span class="service-text">Booking</span>
+                </div>
+                <a href="choose_city.html" class="see-details-btn" style="text-decoration: none; text-align: center;">See Details</a>
+            </div>
+
+            <div class="service-card">
+                <div class="service-main-info">
+                    <img src="assets/images/pharmacy.png" alt="Pharmacy" class="service-icon">
+                    <span class="service-text">Pharmacy</span>
+                </div>
+                <a href="pharmacy.html" class="see-details-btn" style="text-decoration: none; text-align: center;">See Details</a>
+            </div>
+
+            <div class="service-card">
+                <div class="service-main-info">
+                    <img src="assets/images/emergency.png" alt="Emergency" class="service-icon">
+                    <span class="service-text">Emergency</span>
+                </div>
+                <a href="Emergency.HTML" class="see-details-btn" style="text-decoration: none; text-align: center;">See Details</a>
+            </div>
+
+            <div class="service-card">
+                <div class="service-main-info">
+                    <img src="assets/images/home care.png" alt="Home care" class="service-icon">
+                    <span class="service-text">Home care</span>
+                </div>
+                <a href="home_care.html" class="see-details-btn" style="text-decoration: none; text-align: center;">See Details</a>
+            </div>
+
+        </div>
+    </main>
+    <script type="module">
+        import { auth } from "./firebase-config.js";
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+
+        // لو المستخدم رجع للصفحة دي بزرار الـ Back بعد ما عمل Logout، الصفحة تتحمل من جديد
+        // (مش تتعرض من الكاش) عشان كود الحماية يشتغل تاني ويرجّعه على login.html فعليًا
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) window.location.reload();
+        });
+
+        const welcomeEl = document.getElementById('welcome-user');
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // الاسم الحقيقي جاي من حساب الفايربيز مباشرة (اللي تم تسجيله وقت الـ signup)
+                console.log('Firebase user displayName:', user.displayName);
+                welcomeEl.textContent = `Welcome, ${user.displayName || 'User'}`;
+            } else {
+                // مفيش حساب داخل، رجّعه على صفحة الـ login
+                window.location.href = 'login.html';
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', async function (e) {
+            e.preventDefault();
+            await signOut(auth);
+            window.location.href = 'login.html';
+        });
+    </script>
+
+</body>
+</html>

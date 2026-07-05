@@ -1,0 +1,121 @@
+/* --- global.css --- */
+:root {
+    /* ألوان اللايت مود */
+    --bg-color: #f4f7f9;
+    --card-bg: #ffffff;
+    --text-color: #333333; /* اللون الأساسي للنصوص */
+    --header-bg: #0b1a32;
+    --nav-color: #ffffff;
+    --logo-sub: #5b87b8;
+    --border-color: rgba(0,0,0,0.1);
+}
+
+body.dark-mode {
+    /* ألوان الدارك مود */
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --text-color: #ffffff; /* يتحول للأبيض */
+    --header-bg: #000000;
+    --nav-color: #cccccc;
+    --logo-sub: #444444;
+    --border-color: rgba(255,255,255,0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Mulish', sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* الهيدر */
+.main-header {
+    background-color: var(--header-bg);
+    height: 70px;
+    display: flex;
+    align-items: center;
+    padding: 0 40px;               /* غيرنا الـ % لـ بكسل عشان العناصر تروح لأطراف الشاشة اليمين والشمال بالظبط */
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* === التعديل المطلوب لضبط التوزيع على الأطراف وبجنب بعض === */
+.logo-container {
+    display: flex;
+    justify-content: space-between; /* ده السطر المسؤول إنه يرمي الـ nav في آخر اليمين تماماً */
+    align-items: center;            
+    width: 100%;
+}
+
+/* الشعار */
+.logo {
+    display: flex;                  /* بيخلي اللوجو والكلام جنب بعض في سطر واحد */
+    align-items: center;            /* محاذاة اللوجو والنص عمودياً */
+    gap: 12px;                      /* مسافة مناسبة بين الصورة والكلام */
+}
+
+.logo-img {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
+
+.logo h1 {
+    color: var(--nav-color); /* لجعل الشعار أبيض في اللايت والدارك داخل الهيدر الغامق */
+    font-size: 20px;
+    font-weight: 800;
+    margin: 0;                      /* إلغاء أي هوامش افتراضية للـ h1 */
+}
+
+.logo h1 span {
+    color: var(--logo-sub);
+}
+
+/* الروابط الـ Nav */
+.sliding-nav {
+    display: flex;
+    align-items: center;
+    gap: 15px;                      /* مسافات متناسقة بين عناصر الـ nav */
+    position: relative;
+}
+
+.nav-item {
+    color: var(--nav-color);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    transition: color 0.3s ease;
+}
+
+.nav-item:hover {
+    color: #ffffff; /* دائماً أبيض عند التحويم لضمان التباين */
+}
+
+.nav-indicator {
+    position: absolute;
+    bottom: -5px;
+    height: 2px;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+    opacity: 0;
+}
+
+.sep {
+    color: var(--nav-color);
+}
+// تطبيق الثيم المحفوظ فور تحميل أي صفحة
+const savedTheme = localStorage.getItem('appTheme');
+if (savedTheme === 'dark') {
+    document.body.classList.add('dark-mode');
+}

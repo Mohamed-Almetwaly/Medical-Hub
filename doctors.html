@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <title>Home Visit – Doctors</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:        #0d1b2e;
+      --navy-mid:    #1a2d45;
+      --blue-light:  #c9dcef;
+      --blue-muted:  #a8bfd8;
+      --blue-card:   #b8cedf;
+      --accent:      #4a90b8;
+      --sidebar-bg:  #e8e8e8;
+      --white:       #ffffff;
+      --text-dark:   #1a1a2e;
+      --text-mid:    #3a3a4a;
+      --text-light:  #6a7a8a;
+      --selected-bg: #1a2d45;
+      --selected-text:#ffffff;
+      --hover-bg:    #d8e8f4;
+      --radius:      12px;
+      --transition:  0.2s ease;
+      --star:        #f4c542;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--white);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--navy);
+      padding: 24px 32px;
+      color: var(--white);
+    }
+
+    .header-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Layout ── */
+    .layout {
+      display: flex;
+      flex: 1;
+      min-height: calc(100vh - 75px);
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 360px;
+      min-width: 300px;
+      background: var(--sidebar-bg);
+      border-right: 1px solid #d0d0d0;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+    }
+
+    /* Specialty row default (Unselected) */
+    .specialty-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 18px;
+      cursor: pointer;
+      background: var(--blue-card);
+      border-radius: var(--radius);
+      transition: all var(--transition);
+      border: 1.5px solid transparent;
+    }
+
+    .specialty-row:hover {
+      background: var(--blue-muted);
+      border-color: var(--accent);
+    }
+
+    /* Active State matching image */
+    .specialty-row.active {
+      background: var(--selected-bg);
+      color: var(--selected-text);
+    }
+
+    .row-icon {
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .row-icon svg {
+      width: 32px;
+      height: 32px;
+      stroke: var(--navy-mid);
+      fill: none;
+      stroke-width: 1.5;
+      transition: stroke var(--transition);
+    }
+
+    .specialty-row.active .row-icon svg {
+      stroke: var(--accent);
+    }
+
+    .row-info { min-width: 0; }
+
+    .row-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .specialty-row.active .row-name {
+      color: var(--accent);
+    }
+
+    .row-sub {
+      font-size: 0.82rem;
+      color: var(--text-mid);
+      margin-top: 2px;
+    }
+
+    .specialty-row.active .row-sub {
+      color: #aac4dc;
+    }
+
+    /* ── Main Content Area ── */
+    .main {
+      flex: 1;
+      background: var(--white);
+      padding: 40px 48px;
+      overflow-y: auto;
+    }
+
+    .doctors-header {
+      margin-bottom: 28px;
+    }
+
+    .doctors-header h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+
+    .doctors-header p {
+      font-size: 0.92rem;
+      color: var(--text-light);
+    }
+
+    .doctors-header p span {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Doctor list container */
+    .doctor-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 850px;
+    }
+
+    /* Doctor Card matching image style */
+    .doctor-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--white);
+      border: 1.5px solid #dce8f2;
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      transition: box-shadow var(--transition), border-color var(--transition);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+
+    .doctor-card:hover {
+      box-shadow: 0 6px 20px rgba(74,144,184,0.15);
+      border-color: var(--accent);
+    }
+
+    .doctor-left-block {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+    }
+
+    /* Avatar circle */
+    .doctor-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #f0f5fa;
+      border: 1px solid #dce8f2;
+    }
+
+    /* Info */
+    .doctor-info { min-width: 0; }
+
+    .doctor-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 3px;
+    }
+
+    .doctor-title {
+      font-size: 0.85rem;
+      color: var(--text-mid);
+      margin-bottom: 4px;
+    }
+
+    .doctor-rating {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.85rem;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+    }
+
+    .star { color: var(--star); font-size: 1rem; }
+
+    .doctor-slots {
+      font-size: 0.82rem;
+      color: var(--text-dark);
+      line-height: 1.5;
+    }
+
+    /* Right Block: Price & Button */
+    .doctor-right-block {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    .price-container {
+      font-size: 0.85rem;
+      color: var(--text-dark);
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .price-value {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Styled Button matching image */
+    .btn-details {
+      background: #b8cedf;
+      color: var(--navy);
+      border: none;
+      border-radius: 20px;
+      padding: 8px 24px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all var(--transition);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .btn-details:hover {
+      background: var(--navy-mid);
+      color: var(--white);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 850px) {
+      .layout { flex-direction: column; }
+      .sidebar { width: 100%; border-right: none; border-bottom: 1px solid #d0d0d0; }
+      .main { padding: 24px 20px; }
+      .doctor-card { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .doctor-right-block { align-items: flex-start; width: 100%; border-top: 1px solid #eee; padding-top: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-title">Clinics</div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar">
+
+    <div class="specialty-row" data-specialty="Cardiology" onclick="selectSpecialty(this, 'Cardiology')">
+      <div class="row-icon">
+        <svg viewBox="0 0 48 48"><path d="M24 38s-16-10.5-16-20a8 8 0 0116 0 8 8 0 0116 0c0 9.5-16 20-16 20z"/></svg>
+      </div>
+      <div class="row-info">
+        <div class="row-name">Cardiology Clinic</div>
+        <div class="row-sub">Heart &amp; blood vessels</div>
+      </div>
+    </div>
+
+    <div class="specialty-row" data-specialty="Dermatology" onclick="selectSpecialty(this, 'Dermatology')">
+      <div class="row-icon">
+        <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="14"/><path d="M16 22c2-4 8-6 12-2"/><circle cx="30" cy="18" r="2" fill="currentColor"/><path d="M20 30c2 2 6 2 8 0"/></svg>
+      </div>
+      <div class="row-info">
+        <div class="row-name">Dermatology Clinic</div>
+        <div class="row-sub">Skin, hair &amp; nails</div>
+      </div>
+    </div>
+
+    <div class="specialty-row" data-specialty="Pediatrics" onclick="selectSpecialty(this, 'Pediatrics')">
+      <div class="row-icon">
+        <svg viewBox="0 0 48 48"><circle cx="24" cy="14" r="7"/><path d="M10 40c0-7.7 6.3-14 14-14s14 6.3 14 14"/></svg>
+      </div>
+      <div class="row-info">
+        <div class="row-name">Pediatrics Clinic</div>
+        <div class="row-sub">Children's Health</div>
+      </div>
+    </div>
+
+    <div class="specialty-row" data-specialty="Gynecology" onclick="selectSpecialty(this, 'Gynecology')">
+      <div class="row-icon">
+        <svg viewBox="0 0 48 48"><circle cx="24" cy="18" r="9"/><line x1="24" y1="27" x2="24" y2="38"/><line x1="18" y1="34" x2="30" y2="34"/></svg>
+      </div>
+      <div class="row-info">
+        <div class="row-name">Gynecology &amp; Obstetrics Clinic</div>
+        <div class="row-sub">Women's &amp; pregnancy</div>
+      </div>
+    </div>
+
+    <div class="specialty-row" data-specialty="ENT" onclick="selectSpecialty(this, 'ENT')">
+      <div class="row-icon">
+        <svg viewBox="0 0 48 48"><ellipse cx="24" cy="24" rx="10" ry="14"/><path d="M14 18c-4 2-6 8-2 12"/><path d="M34 18c4 2 6 8 2 12"/></svg>
+      </div>
+      <div class="row-info">
+        <div class="row-name">ENT</div>
+        <div class="row-sub">Ear, nose &amp; throat</div>
+      </div>
+    </div>
+
+    <div class="specialty-row" data-specialty="Dentistry" onclick="selectSpecialty(this, 'Dentistry')">
+      <div class="row-icon">
+        <svg viewBox="0 0 48 48"><path d="M16 8c-4 0-8 4-8 10 0 8 4 16 8 22 1 2 4 2 5 0l3-8 3 8c1 2 4 2 5 0 4-6 8-14 8-22 0-6-4-10-8-10-2 0-4 1-8 0z"/></svg>
+      </div>
+      <div class="row-info">
+        <div class="row-name">Dentistry</div>
+        <div class="row-sub">Teeth &amp; oral care</div>
+      </div>
+    </div>
+
+    <div class="specialty-row" data-specialty="Orthopedics" onclick="selectSpecialty(this, 'Orthopedics')">
+      <div class="row-icon">
+        <svg viewBox="0 0 48 48"><line x1="24" y1="8" x2="24" y2="40"/><line x1="14" y1="20" x2="34" y2="20"/><line x1="16" y1="30" x2="32" y2="30"/></svg>
+      </div>
+      <div class="row-info">
+        <div class="row-name">Orthopedics</div>
+        <div class="row-sub">Bones &amp; Joints</div>
+      </div>
+    </div>
+
+    <div class="specialty-row" data-specialty="Ophthalmology" onclick="selectSpecialty(this, 'Ophthalmology')">
+      <div class="row-icon">
+        <svg viewBox="0 0 48 48"><ellipse cx="24" cy="24" rx="16" ry="10"/><circle cx="24" cy="24" r="5"/><circle cx="24" cy="24" r="2" fill="currentColor"/></svg>
+      </div>
+      <div class="row-info">
+        <div class="row-name">Ophthalmology</div>
+        <div class="row-sub">Eye Care</div>
+      </div>
+    </div>
+
+    <div class="specialty-row" data-specialty="Neurology" onclick="selectSpecialty(this, 'Neurology')">
+      <div class="row-icon">
+        <svg viewBox="0 0 48 48"><circle cx="24" cy="20" r="10"/><path d="M18 20c0-4 3-7 6-7"/><path d="M30 20c0-4-3-7-6-7"/><path d="M20 30l-4 8m12-8l4 8"/></svg>
+      </div>
+      <div class="row-info">
+        <div class="row-name">Neurology Clinic</div>
+        <div class="row-sub">Brain &amp; nerve care</div>
+      </div>
+    </div>
+
+  </aside>
+
+  <main class="main">
+    <div class="doctors-header">
+      <h2>Doctors</h2>
+      <p>Available doctors in <span id="specialty-label">Cardiology</span></p>
+    </div>
+
+    <div class="doctor-list" id="doctor-list">
+    </div>
+  </main>
+
+</div>
+
+<script>
+  // متغيرات لحفظ اسم المدينة والمنطقة طوال فترة تصفح المستخدم
+  let globalCity = '';
+  let globalArea = '';
+
+  // قاعدة بيانات متكاملة لجميع التخصصات بدون أي نقص
+  const doctorsData = {
+    Cardiology: [
+      { name: "DR. Mohamed Ali", title: "Consultant Cardiologist", rating: "4.8", reviews: "320", slots: ["Tomorrow 5:00 PM"], price: "350" },
+      { name: "DR. Sarah Mohammed", title: "Consultant Cardiologist", rating: "4.8", reviews: "320", slots: ["Tomorrow 6:20 PM"], price: "350" }
+    ],
+    Dermatology: [
+      { name: "DR. Ahmed Hassan", title: "Consultant Dermatologist", rating: "4.9", reviews: "190", slots: ["Today 7:00 PM"], price: "300" }
+    ],
+    Pediatrics: [
+      { name: "DR. Hany Wadid", title: "Professor of Pediatrics", rating: "4.9", reviews: "510", slots: ["Tomorrow 3:00 PM"], price: "450" }
+    ],
+    Gynecology: [
+      { name: "DR. Mona Kamel", title: "Consultant OB-GYN", rating: "4.8", reviews: "410", slots: ["Mon 6:00 PM"], price: "400" }
+    ],
+    ENT: [
+      { name: "DR. Tarek Abdel-Aziz", title: "ENT Consultant", rating: "4.7", reviews: "180", slots: ["Sat 10:00 AM"], price: "320" }
+    ],
+    Dentistry: [
+      { name: "DR. Amr Hegazi", title: "Consultant Dental Surgeon", rating: "4.9", reviews: "340", slots: ["Tomorrow 2:00 PM"], price: "500" }
+    ],
+    Orthopedics: [
+      { name: "DR. Sherif El-Kady", title: "Consultant Orthopedic", rating: "4.8", reviews: "290", slots: ["Wed 5:00 PM"], price: "400" }
+    ],
+    Ophthalmology: [
+      { name: "DR. Mahmoud Abdel-Hady", title: "Eye Surgery Specialist", rating: "4.7", reviews: "165", slots: ["Tomorrow 6:00 PM"], price: "300" }
+    ],
+    Neurology: [
+      { name: "DR. Yasser Mostafa", title: "Professor of Neurology", rating: "4.9", reviews: "220", slots: ["Today 9:00 PM"], price: "600" }
+    ]
+  };
+
+  function renderDoctors(specialty) {
+    const listContainer = document.getElementById('doctor-list');
+    listContainer.innerHTML = ''; 
+
+    const doctors = doctorsData[specialty] || [];
+
+    if (doctors.length === 0) {
+      listContainer.innerHTML = `<p style="color: var(--text-light); font-style: italic;">No doctors available right now.</p>`;
+      return;
+    }
+
+    doctors.forEach(doc => {
+      const card = document.createElement('div');
+      card.className = 'doctor-card';
+
+      // دمج وتمرير المدينة والمنطقة المُختارة ديناميكياً لزر تفاصيل الدكتور
+      const detailUrl = `details.html?doctor=${encodeURIComponent(doc.name)}&specialty=${encodeURIComponent(specialty)}&city=${encodeURIComponent(globalCity)}&area=${encodeURIComponent(globalArea)}`;
+
+      card.innerHTML = `
+        <div class="doctor-left-block">
+          <div class="doctor-avatar">
+            <svg viewBox="0 0 48 48" style="width:100%; height:100%; stroke:var(--navy-mid); fill:none; stroke-width:1.4; padding:8px;">
+              <circle cx="24" cy="16" r="8"/>
+              <path d="M10 42c0-7.7 6.3-14 14-14s14 6.3 14 14"/>
+            </svg>
+          </div>
+          <div class="doctor-info">
+            <div class="doctor-name">${doc.name}</div>
+            <div class="doctor-title">${doc.title}</div>
+            <div class="doctor-rating">
+              <span class="star">★</span> ${doc.rating} 
+              <span style="color:var(--text-light); margin-left:4px;">(${doc.reviews} reviews)</span>
+            </div>
+            <div class="doctor-slots">
+              <div>${doc.slots[0]}</div>
+            </div>
+          </div>
+        </div>
+        <div class="doctor-right-block">
+          <div class="price-container">
+            Clinic visit:<span class="price-value">${doc.price} EGP</span>
+          </div>
+          <button class="btn-details" onclick="window.location.href='${detailUrl}'">View details</button>
+        </div>
+      `;
+      listContainer.appendChild(card);
+    });
+  }
+
+  function selectSpecialty(row, label) {
+    document.querySelectorAll('.specialty-row').forEach(r => r.classList.remove('active'));
+    row.classList.add('active');
+    document.getElementById('specialty-label').textContent = label;
+    
+    renderDoctors(label);
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    // استقبال وتخزين المدينة والمنطقة القادمين من محرك البحث الرئيسي
+    globalCity = urlParams.get('city') || '';
+    globalArea = urlParams.get('area') || '';
+
+    const specialty = urlParams.get('specialty') || 'Cardiology';
+
+    const targetRow = document.querySelector(`.specialty-row[data-specialty="${specialty}"]`);
+    if (targetRow) {
+      selectSpecialty(targetRow, specialty);
+    } else {
+      const firstRow = document.querySelector('.specialty-row');
+      if (firstRow) selectSpecialty(firstRow, 'Cardiology');
+    }
+  });
+</script>
+
+</body>
+</html>

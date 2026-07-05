@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Assistance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+        <link rel="icon" type="image/png" href="assets/images/logo.png">
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { height: 100%; font-family: 'Mulish', sans-serif; background: #fff; color: #1a1a1a; }
+        body { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+
+        /* Header */
+        .main-header {
+            background-color: #0b1a32;
+            height: 65px;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            flex-shrink: 0;
+            z-index: 100;
+        }
+        .header-container { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .logo { display: flex; align-items: center; gap: 10px; }
+        .logo-icon {
+            width: 36px; height: 36px;
+            background: #1a4fa8;
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+        }
+        .logo h1 { color: white; font-size: 18px; font-weight: 800; }
+        .logo h1 span { color: #5b87b8; }
+        .header-icons { display: flex; gap: 24px; align-items: center; }
+        .header-icon-item {
+            display: flex; flex-direction: column; align-items: center; gap: 2px;
+            color: #a0b8d8; font-size: 11px; font-weight: 600; cursor: pointer;
+        }
+        .header-icon-item svg { width: 22px; height: 22px; stroke: #a0b8d8; fill: none; stroke-width: 1.8; }
+        .header-icon-item:hover { color: #fff; }
+        .header-icon-item:hover svg { stroke: #fff; }
+
+        /* Body wrap */
+        #emr-wrap { display: flex; flex: 1; min-height: 0; overflow: hidden; }
+
+        /* Sidebar */
+        #emr-sidebar {
+            width: 260px; flex-shrink: 0;
+            background: #f7f8fa;
+            border-right: 1px solid #e8eaed;
+            display: flex; flex-direction: column; overflow: hidden;
+        }
+        .emr-sidebar-title {
+            font-size: 14px; font-weight: 800; color: #1565c0;
+            padding: 16px 20px 14px;
+            border-bottom: 1px solid #e4e6ea;
+            flex-shrink: 0;
+        }
+        #emr-city-list { overflow-y: auto; flex: 1; }
+
+        .emr-city {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 13px 18px;
+            font-size: 14px; font-weight: 700; color: #333;
+            border-bottom: 1px solid #eaecef;
+            cursor: pointer; user-select: none;
+            transition: background 0.12s;
+        }
+        .emr-city:hover { background: #e8f0fb; }
+        .emr-city.hl { background: #d6e6f7; color: #1565c0; }
+        .emr-city.active-city { background: #1565c0; color: #fff; }
+        .emr-city.active-city .emr-city-arrow { color: #fff; }
+        .emr-city-arrow { font-size: 14px; color: #bbb; transition: transform 0.2s; }
+        .emr-city.open .emr-city-arrow { transform: rotate(90deg); color: #1565c0; }
+        .emr-city.active-city.open .emr-city-arrow { color: #fff; }
+
+        .emr-districts { display: none; background: #f0f4fa; }
+        .emr-districts.open { display: block; }
+        .emr-dist {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 18px 10px 32px;
+            font-size: 13px; font-weight: 600; color: #555;
+            border-bottom: 1px solid #e8eaed;
+            cursor: pointer; transition: background 0.12s;
+        }
+        .emr-dist:hover { background: #ddeaf8; }
+        .emr-dist.active { color: #1565c0; background: #e3f0fc; }
+        .emr-dot { width: 7px; height: 7px; border-radius: 50%; background: #aac4df; flex-shrink: 0; }
+        .emr-dist.active .emr-dot { background: #1565c0; }
+
+        /* Main */
+        #emr-main { flex: 1; overflow-y: auto; padding: 28px 36px; min-width: 0; }
+
+        .emr-screen { display: none; }
+        .emr-screen.active { display: block; }
+
+        /* Options Screen */
+        .emr-sec-title { font-size: 22px; font-weight: 800; color: #c62828; margin-bottom: 4px; }
+        .emr-sec-sub { font-size: 13px; color: #1565c0; margin-bottom: 22px; }
+
+        .emr-warning {
+            display: none; background: #fff3e0; border: 1px solid #ffb74d;
+            border-radius: 10px; padding: 11px 16px;
+            font-size: 13px; color: #e65100; font-weight: 700;
+            margin-bottom: 16px; max-width: 580px;
+        }
+        .emr-warning.show { display: block; }
+
+        .emr-card {
+            border: 1.5px solid #e4e6ea; border-radius: 14px;
+            padding: 20px 24px 18px; margin-bottom: 16px;
+            max-width: 580px; background: #fff;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+        .emr-card h3 { font-size: 16px; font-weight: 800; margin-bottom: 5px; color: #111; }
+        .emr-card p { font-size: 13px; color: #777; margin-bottom: 16px; }
+
+        .btn-red {
+            background: #c62828; color: #fff; border: none;
+            border-radius: 30px; padding: 12px 48px;
+            font-family: 'Mulish', sans-serif; font-size: 14px; font-weight: 700;
+            cursor: pointer; display: block; margin: 0 auto;
+            transition: background 0.15s;
+        }
+        .btn-red:hover { background: #b71c1c; }
+
+        .btn-blue {
+            background: #1e5c8e; color: #fff; border: none;
+            border-radius: 30px; padding: 12px 48px;
+            font-family: 'Mulish', sans-serif; font-size: 14px; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; gap: 8px; margin: 0 auto;
+            transition: background 0.15s;
+        }
+        .btn-blue:hover { background: #154f7a; }
+
+        /* Status Screen */
+        .emr-status-title { font-size: 22px; font-weight: 800; color: #c62828; margin-bottom: 16px; }
+
+        .emr-success {
+            background: #b8d4ed; border-radius: 10px;
+            padding: 13px 20px; text-align: center;
+            font-size: 14px; font-weight: 700; color: #1a1a1a;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            max-width: 540px; margin-bottom: 16px;
+        }
+        .emr-check {
+            width: 26px; height: 26px; background: #2e7d32;
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; color: #fff; font-size: 14px; flex-shrink: 0;
+        }
+
+        .req-status-label { font-size: 13px; font-weight: 800; color: #333; margin-bottom: 8px; }
+
+        .emr-status-card {
+            border: 1.5px solid #e4e6ea; border-radius: 14px;
+            padding: 16px 20px; max-width: 540px;
+            background: #fff; margin-bottom: 16px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+        .status-row { font-size: 13px; color: #444; margin-bottom: 3px; }
+        .status-row strong { color: #111; }
+        .loc-row { font-size: 13px; color: #444; margin: 10px 0 12px; }
+        .loc-badge {
+            display: inline-block; background: #e3f0fc; color: #1565c0;
+            border-radius: 20px; padding: 2px 10px; font-size: 11px; font-weight: 700;
+            margin-left: 6px; cursor: pointer; border: 1px solid #b3d4f0;
+        }
+
+        #emr-map { width: 100%; height: 200px; border-radius: 10px; margin-bottom: 12px; }
+
+        .emr-eta-wrap { text-align: center; margin-bottom: 4px; }
+        .emr-eta-pill {
+            background: rgba(60,60,60,0.72); color: #fff;
+            border-radius: 30px; padding: 8px 22px;
+            font-size: 13px; font-weight: 600; display: inline-block;
+        }
+        .emr-eta-pill span { color: #5ec4f5; font-weight: 800; }
+
+        .emr-actions { display: flex; gap: 12px; max-width: 540px; margin-top: 14px; }
+        .btn-cancel-req {
+            flex: 1; border: 1.5px solid #c62828; color: #c62828;
+            background: #fff; border-radius: 10px; padding: 11px;
+            font-family: 'Mulish', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer;
+            transition: background 0.12s;
+        }
+        .btn-cancel-req:hover { background: #fce8e8; }
+        .btn-support {
+            flex: 1; border: 1.5px solid #ccc; color: #333;
+            background: #fff; border-radius: 10px; padding: 11px;
+            font-family: 'Mulish', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer;
+            transition: background 0.12s;
+        }
+        .btn-support:hover { background: #f5f5f5; }
+
+        /* Call Modal */
+        .emr-modal-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(255,255,255,0.6); z-index: 9999;
+            align-items: center; justify-content: center;
+        }
+        .emr-modal-overlay.open { display: flex; }
+        .emr-modal-box {
+            background: #b0cce8; border-radius: 18px;
+            padding: 38px 52px; text-align: center;
+            max-width: 400px; width: 90%;
+            box-shadow: 0 6px 28px rgba(0,0,0,0.15);
+        }
+        .emr-modal-box h2 { font-size: 18px; font-weight: 800; margin-bottom: 10px; }
+        .emr-modal-box p { font-size: 13px; color: #333; line-height: 1.6; margin-bottom: 24px; }
+        .emr-modal-btns { display: flex; justify-content: center; gap: 16px; }
+        .emr-modal-btns button {
+            border: 1.5px solid #8aafc9; background: rgba(255,255,255,0.38);
+            color: #222; border-radius: 10px; padding: 10px 30px;
+            font-family: 'Mulish', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer;
+        }
+        .emr-modal-btns button:hover { background: rgba(255,255,255,0.65); }
+
+        /* Location Picker Modal */
+        .emr-loc-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.45); z-index: 9998;
+            align-items: center; justify-content: center;
+        }
+        .emr-loc-overlay.open { display: flex; }
+        .emr-loc-box {
+            background: #fff; border-radius: 16px;
+            padding: 26px 26px 20px; max-width: 450px; width: 92%;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+        }
+        .emr-loc-box h3 { font-size: 16px; font-weight: 800; color: #c62828; margin-bottom: 5px; }
+        .emr-loc-box p { font-size: 13px; color: #666; margin-bottom: 12px; }
+        #emr-loc-map { width: 100%; height: 250px; border-radius: 10px; margin-bottom: 8px; border: 1px solid #e0e0e0; }
+        .emr-coords { font-size: 12px; color: #999; text-align: center; margin-bottom: 12px; }
+        .emr-loc-btns { display: flex; gap: 10px; }
+        .btn-confirm-loc {
+            flex: 2; background: #c62828; color: #fff; border: none;
+            border-radius: 10px; padding: 12px;
+            font-family: 'Mulish', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer;
+        }
+        .btn-confirm-loc:hover { background: #b71c1c; }
+        .btn-cancel-loc {
+            flex: 1; border: 1.5px solid #ccc; background: #fff; color: #555;
+            border-radius: 10px; padding: 12px;
+            font-family: 'Mulish', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    
+
+    <div id="emr-wrap">
+
+        <aside id="emr-sidebar">
+            <div class="emr-sidebar-title">Choose the city</div>
+            <div id="emr-city-list"></div>
+        </aside>
+
+        <main id="emr-main">
+
+            <!-- Options Screen -->
+            <div id="screen-options" class="emr-screen active">
+                <div class="emr-sec-title">Emergency Assistance</div>
+                <div class="emr-sec-sub" id="emr-sub-label">Select your city and district from the left to get started.</div>
+
+                <div class="emr-warning" id="emr-warning">
+                    ⚠ Please select your city and district first from the sidebar.
+                </div>
+
+                <div class="emr-card">
+                    <h3>Request Ambulance</h3>
+                    <p>Send an emergency request for an ambulance.</p>
+                    <button class="btn-red" onclick="handleRequestNow()">Request Now</button>
+                </div>
+
+                <div class="emr-card">
+                    <h3>Call Emergency Number</h3>
+                    <p>Direct call to the emergency dispatch center.</p>
+                    <button class="btn-blue" onclick="openCallModal()">📞 Call 123</button>
+                </div>
+            </div>
+
+            <!-- Status Screen -->
+            <div id="screen-status" class="emr-screen">
+                <div class="emr-status-title">Emergency Assistance</div>
+
+                <div class="emr-success">
+                    <div>Your ambulance request has been<br>sent successfully</div>
+                    <div class="emr-check">✓</div>
+                </div>
+
+                <div class="req-status-label">Request Status</div>
+
+                <div class="emr-status-card">
+                    <div class="status-row"><strong>Status:</strong> Awaiting ambulance confirmation</div>
+                    <div class="status-row">A dispatcher is reviewing your request.</div>
+                    <div class="loc-row">
+                        <strong>Your location:</strong>
+                        <span id="emr-loc-name">—</span>
+                        <span class="loc-badge" onclick="openLocModal()">✎ Change</span>
+                    </div>
+                    <div id="emr-map"></div>
+                    <div class="emr-eta-wrap">
+                        <span class="emr-eta-pill">Ambulance ETA: <span id="emr-eta">15 minutes</span></span>
+                    </div>
+                </div>
+
+                <div class="emr-actions">
+                    <button class="btn-cancel-req" onclick="cancelRequest()">Cancel Request</button>
+                    <button class="btn-support">Contact Support</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Call Modal -->
+    <div class="emr-modal-overlay" id="call-modal">
+        <div class="emr-modal-box">
+            <h2>Call Emergency Number 123</h2>
+            <p>You will be redirected to<br>your phone dialer</p>
+            <div class="emr-modal-btns">
+                <button onclick="confirmCall()">Call</button>
+                <button onclick="closeCallModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Location Picker Modal -->
+    <div class="emr-loc-overlay" id="loc-modal">
+        <div class="emr-loc-box">
+            <h3>Confirm Your Location</h3>
+            <p>Drag the pin or click on the map to set your exact location.</p>
+            <div id="emr-loc-map"></div>
+            <div class="emr-coords" id="emr-coords">Detecting location…</div>
+            <div class="emr-loc-btns">
+                <button class="btn-confirm-loc" onclick="confirmLocation()">Confirm Location</button>
+                <button class="btn-cancel-loc" onclick="closeLocModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    const CITIES = {
+        'Cairo': { lat:30.06, lng:31.23, districts:[
+            {name:'Nasr City',       lat:30.0644, lng:31.3411},
+            {name:'Heliopolis',      lat:30.0920, lng:31.3237},
+            {name:'El Shorouk City', lat:30.1270, lng:31.6097},
+            {name:'Madinty',         lat:30.0500, lng:31.6500},
+            {name:'Zamalek',         lat:30.0617, lng:31.2194},
+            {name:'Ain Shams',       lat:30.1244, lng:31.3200},
+        ]},
+        'Giza': { lat:30.01, lng:31.21, districts:[
+            {name:'Dokki',           lat:30.0396, lng:31.2119},
+            {name:'Haram',           lat:29.9743, lng:31.1358},
+            {name:'6th of October',  lat:29.9397, lng:30.9322},
+        ]},
+        'Alexandria': { lat:31.20, lng:29.92, districts:[
+            {name:'Smouha',          lat:31.1987, lng:29.9282},
+            {name:'Montazah',        lat:31.2898, lng:30.0052},
+            {name:'Sidi Gaber',      lat:31.2115, lng:29.9466},
+        ]},
+        'Port Said': { lat:31.26, lng:32.28, districts:[
+            {name:'Port Fouad',      lat:31.2596, lng:32.3208},
+            {name:'Al Manakh',       lat:31.2535, lng:32.2887},
+        ]},
+        'Suez': { lat:29.97, lng:32.54, districts:[
+            {name:'Al Arbaeen',      lat:29.9793, lng:32.5365},
+            {name:'Faisal',          lat:29.9600, lng:32.5500},
+        ]},
+        'Sinai': { lat:30.53, lng:34.15, districts:[
+            {name:'Arish',           lat:31.1303, lng:33.7984},
+            {name:'Sharm El Sheikh', lat:27.9158, lng:34.3299},
+        ]},
+        'Beni Suef': { lat:29.07, lng:31.09, districts:[
+            {name:'Beni Suef City',  lat:29.0744, lng:31.0985},
+            {name:'Nasser',          lat:29.0600, lng:31.1100},
+        ]},
+        'Assiut': { lat:27.18, lng:31.18, districts:[
+            {name:'Assiut City',     lat:27.1818, lng:31.1838},
+            {name:'Dayrut',          lat:27.5580, lng:30.8060},
+        ]},
+        'Luxor': { lat:25.69, lng:32.64, districts:[
+            {name:'East Bank',       lat:25.6989, lng:32.6421},
+            {name:'West Bank',       lat:25.7300, lng:32.6100},
+        ]},
+        'Aswan': { lat:24.09, lng:32.89, districts:[
+            {name:'Aswan City',      lat:24.0889, lng:32.8998},
+            {name:'Edfu',            lat:24.9780, lng:32.8740},
+        ]},
+    };
+
+    let openCity = null, selectedCity = null, selectedDistrict = null;
+    let confirmedLat = 30.06, confirmedLng = 31.23, confirmedName = '';
+    let pickerMap = null, pickerMarker = null;
+    let statusMap = null, statusMarker = null;
+
+    function buildSidebar() {
+        const list = document.getElementById('emr-city-list');
+        list.innerHTML = '';
+        Object.entries(CITIES).forEach(([city, data]) => {
+            const isOpen = city === openCity;
+            const isSel  = city === selectedCity;
+
+            const row = document.createElement('div');
+            let cls = 'emr-city';
+            if (isSel && !isOpen) cls += ' active-city';
+            else if (isSel || isOpen) cls += ' hl';
+            if (isOpen) cls += ' open';
+            row.className = cls;
+            row.innerHTML = city + ' <span class="emr-city-arrow">&#8250;</span>';
+            row.onclick = () => { openCity = openCity === city ? null : city; buildSidebar(); };
+            list.appendChild(row);
+
+            const sub = document.createElement('div');
+            sub.className = 'emr-districts' + (isOpen ? ' open' : '');
+            data.districts.forEach(d => {
+                const isAct = selectedDistrict && d.name === selectedDistrict.name && city === selectedCity;
+                const dr = document.createElement('div');
+                dr.className = 'emr-dist' + (isAct ? ' active' : '');
+                dr.innerHTML = '<span class="emr-dot"></span>' + d.name;
+                dr.onclick = () => pickDistrict(city, d);
+                sub.appendChild(dr);
+            });
+            list.appendChild(sub);
+        });
+    }
+
+    function pickDistrict(city, d) {
+        selectedCity = city; selectedDistrict = d;
+        confirmedLat = d.lat; confirmedLng = d.lng; confirmedName = d.name;
+        document.getElementById('emr-sub-label').textContent = 'Emergency services for ' + d.name + ', ' + city + '.';
+        document.getElementById('emr-warning').classList.remove('show');
+        buildSidebar();
+        showScreen('options');
+    }
+
+    function showScreen(s) {
+        document.querySelectorAll('.emr-screen').forEach(el => el.classList.remove('active'));
+        document.getElementById('screen-' + s).classList.add('active');
+    }
+
+    function handleRequestNow() {
+        if (!selectedDistrict) { document.getElementById('emr-warning').classList.add('show'); return; }
+        openLocModal();
+    }
+
+    function openLocModal() {
+        document.getElementById('loc-modal').classList.add('open');
+        setTimeout(() => {
+            if (!pickerMap) {
+                pickerMap = L.map('emr-loc-map').setView([confirmedLat, confirmedLng], 15);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution:'© OpenStreetMap'}).addTo(pickerMap);
+                pickerMarker = L.marker([confirmedLat, confirmedLng], {draggable:true}).addTo(pickerMap);
+                pickerMarker.on('dragend', syncCoords);
+                pickerMap.on('click', e => { pickerMarker.setLatLng(e.latlng); syncCoords(); });
+            } else {
+                pickerMap.setView([confirmedLat, confirmedLng], 15);
+                pickerMarker.setLatLng([confirmedLat, confirmedLng]);
+            }
+            syncCoords();
+            setTimeout(() => pickerMap.invalidateSize(), 150);
+        }, 100);
+    }
+
+    function syncCoords() {
+        const p = pickerMarker.getLatLng();
+        document.getElementById('emr-coords').textContent = 'Lat: ' + p.lat.toFixed(5) + '   Lng: ' + p.lng.toFixed(5);
+    }
+
+    function closeLocModal() { document.getElementById('loc-modal').classList.remove('open'); }
+
+    function confirmLocation() {
+        const p = pickerMarker.getLatLng();
+        confirmedLat = p.lat; confirmedLng = p.lng;
+        closeLocModal();
+        showStatusScreen();
+    }
+
+    function showStatusScreen() {
+        showScreen('status');
+        document.getElementById('emr-loc-name').textContent = confirmedName;
+        const d = selectedDistrict;
+        const dx = (confirmedLat - d.lat) * 111;
+        const dy = (confirmedLng - d.lng) * 111 * Math.cos(d.lat * Math.PI / 180);
+        const eta = Math.max(5, Math.min(30, Math.round(Math.sqrt(dx*dx + dy*dy) * 2 + 10)));
+        document.getElementById('emr-eta').textContent = eta + ' minutes';
+        setTimeout(() => {
+            if (!statusMap) {
+                statusMap = L.map('emr-map').setView([confirmedLat, confirmedLng], 15);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution:'© OpenStreetMap'}).addTo(statusMap);
+                statusMarker = L.marker([confirmedLat, confirmedLng]).addTo(statusMap).bindPopup('Your location').openPopup();
+            } else {
+                statusMap.setView([confirmedLat, confirmedLng], 15);
+                statusMarker.setLatLng([confirmedLat, confirmedLng]).openPopup();
+            }
+            setTimeout(() => statusMap.invalidateSize(), 150);
+        }, 100);
+    }
+
+    function cancelRequest() {
+        if (confirm('Cancel the ambulance request?')) showScreen('options');
+    }
+
+    function openCallModal()  { document.getElementById('call-modal').classList.add('open'); }
+    function closeCallModal() { document.getElementById('call-modal').classList.remove('open'); }
+    function confirmCall()    { closeCallModal(); window.location.href = 'tel:123'; }
+
+    buildSidebar();
+    </script>
+</body>
+</html>

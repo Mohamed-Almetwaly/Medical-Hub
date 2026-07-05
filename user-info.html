@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <title>Home Visit – Booking Confirmation</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:        #0d1b2e;
+      --navy-mid:    #1a2d45;
+      --blue-light:  #c9dcef;
+      --blue-muted:  #a8bfd8;
+      --blue-card:   #b8cedf;
+      --accent:      #4a90b8;
+      --white:       #ffffff;
+      --text-dark:   #1a1a2e;
+      --text-mid:    #3a3a4a;
+      --text-light:  #6a7a8a;
+      --radius:      12px;
+      --transition:  0.3s ease;
+      --star:        #f4c542;
+      --green-success: #2ec4b6;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--white);
+      color: var(--text-dark);
+      min-height: 100vh;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    /* ── Doctor Top Card ── */
+    .doc-header-card {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      border: 1.5px solid #dce8f2;
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      width: 100%;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    }
+
+    .doc-avatar {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: #f0f5fa; border: 1px solid #dce8f2;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .doc-avatar svg { width: 44px; height: 44px; stroke: var(--navy-mid); fill: none; stroke-width: 1.4; }
+
+    .doc-details-text { flex: 1; }
+    .doc-name { font-size: 1.15rem; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
+    .doc-title { font-size: 0.88rem; color: var(--text-mid); margin-bottom: 6px; }
+    .rating-stars { display: flex; align-items: center; gap: 3px; color: var(--star); font-size: 1.1rem; }
+    .rating-text { font-size: 0.82rem; color: var(--accent); font-weight: 600; margin-left: 8px; }
+
+    /* ── Date of Visit Section ── */
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+    }
+
+    .date-badge {
+      display: inline-block;
+      background: var(--blue-card);
+      color: var(--navy);
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+    }
+
+    /* ── Info Form Wrapper ── */
+    .form-wrapper {
+      border: 1.5px solid #b8cedf;
+      border-radius: var(--radius);
+      padding: 32px;
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 600px;
+    }
+
+    .input-group {
+      position: relative;
+      width: 100%;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 16px 20px;
+      border: 1.5px solid #dce8f2;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      outline: none;
+      color: var(--text-dark);
+      background: #fdfdfd;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
+      transition: border-color var(--transition);
+    }
+
+    .input-group input:focus {
+      border-color: var(--accent);
+    }
+
+    /* Flag layout inside phone input */
+    .phone-container {
+      position: relative;
+    }
+    .flag-icon {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .flag-icon img {
+      width: 24px;
+      height: auto;
+      border-radius: 2px;
+      border: 1px solid #ddd;
+    }
+
+    /* Row inputs (Apartment & Building) */
+    .input-row {
+      display: flex;
+      gap: 16px;
+    }
+
+    /* ── Total Price Section ── */
+    .total-price-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      padding-top: 16px;
+    }
+
+    .total-label {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .total-value {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .location-footer {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.88rem;
+      color: var(--text-mid);
+      margin-top: 8px;
+    }
+    .location-footer svg { width: 18px; height: 18px; stroke: var(--accent); fill: none; stroke-width: 2; }
+
+    /* ── Submission Button ── */
+    .btn-submit-booking {
+      background: var(--navy);
+      color: var(--white);
+      border: none;
+      border-radius: var(--radius);
+      padding: 20px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+      margin-top: 20px;
+      transition: background var(--transition);
+    }
+    .btn-submit-booking:hover { background: var(--accent); }
+
+    /* ── Success Overlay Screen (Home care 10) ── */
+    .success-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: #a8bfd8; /* نفس الخلفية اللبنية الهادئة بالظبط */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity var(--transition), visibility var(--transition);
+    }
+
+    .success-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .success-banner {
+      background: var(--navy);
+      color: var(--white);
+      padding: 32px 64px;
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    .success-banner svg {
+      width: 28px; height: 28px;
+      fill: var(--green-success);
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  
+  <div class="doc-header-card">
+    <div class="doc-avatar">
+      <svg viewBox="0 0 48 48"><circle cx="24" cy="16" r="8"/><path d="M10 42c0-7.7 6.3-14 14-14s14 6.3 14 14"/></svg>
+    </div>
+    <div class="doc-details-text">
+      <div class="doc-name" id="billing-doc-name">DR. Mohamed Ali</div>
+      <div class="doc-title" id="billing-doc-title">Professor of Cardiovascular Medicine</div>
+      <div class="rating-stars">★★★★<span style="color:#ccc">★</span> <span class="rating-text">Overall rating from 260 visitors</span></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-title">Date of visit</div>
+    <div class="date-badge" id="billing-date">Wednesday, November 26, 2025</div>
+  </div>
+
+  <div class="form-wrapper">
+    <div class="input-group">
+      <input type="text" placeholder="Full Name" required />
+    </div>
+
+    <div class="input-group phone-container">
+      <input type="tel" placeholder="Phone" style="padding-right: 65px;" required />
+      <div class="flag-icon">
+        <img src="https://flagcdn.com/w40/eg.png" alt="Egypt Flag">
+      </div>
+    </div>
+
+    <div class="input-group">
+      <input type="text" placeholder="Medical number, if available" />
+    </div>
+
+    <div class="input-group">
+      <input type="text" placeholder="Address" required />
+    </div>
+
+    <div class="input-row">
+      <div class="input-group"><input type="text" placeholder="Apartment number" /></div>
+      <div class="input-group"><input type="text" placeholder="Building number" /></div>
+    </div>
+
+    <div class="total-price-container">
+      <div class="total-label">Total price</div>
+      <div class="total-value" id="billing-price">400EGP</div>
+    </div>
+
+    <div class="location-footer">
+      <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span id="billing-location">El-Shorouk, Gardinia neighborhood, Building 142</span>
+    </div>
+  </div>
+
+  <button class="btn-submit-booking" onclick="triggerSuccessConfirmation()">Booking confirmation</button>
+
+</div>
+
+<div class="success-overlay" id="successScreen">
+  <div class="success-banner">
+    <span>The booking has been successfully confirmed</span>
+    <svg viewBox="0 0 24 24">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zM10 14.5l-3-3 1.4-1.4 1.6 1.6 4.1-4.1 1.4 1.4-5.5 5.5z"/>
+    </svg>
+  </div>
+</div>
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    // جلب وحقن البيانات الممررة من الصفحة السابقة ديناميكياً
+    const params = new URLSearchParams(window.location.search);
+    
+    if(params.get('doctor')) document.getElementById('billing-doc-name').textContent = params.get('doctor');
+    if(params.get('specialty')) document.getElementById('billing-doc-title').textContent = params.get('specialty') + ' Specialist';
+    if(params.get('price')) document.getElementById('billing-price').textContent = params.get('price');
+    
+    // حقن عنوان المدينة والمنطقة المختارة بواسطة العميل بدون تثبيت
+    const city = params.get('city');
+    const area = params.get('area');
+    if(city && area) {
+      document.getElementById('billing-location').textContent = `${city}, ${area}, Main Medical Street`;
+    }
+
+    // جلب التاريخ المختار (إن وُجد)
+    if(params.get('date')) {
+      document.getElementById('billing-date').textContent = params.get('date');
+    }
+  });
+
+  function triggerSuccessConfirmation() {
+    // 1. إظهار شاشة النجاح الزرقاء والبانر الداكن (Home care 10)
+    const overlay = document.getElementById('successScreen');
+    overlay.classList.add('show');
+
+    // 2. الانتظار لمدة 3 ثوانٍ ثم التحويل التلقائي لصفحة القائمة الرئيسية للخدمات
+    setTimeout(() => {
+      window.location.href = 'services.html';
+    }, 3000);
+  }
+</script>
+
+</body>
+</html>

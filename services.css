@@ -1,0 +1,129 @@
+/* --- services.css --- */
+
+body {
+    background-color: #f0f4f8;
+    margin: 0;
+    font-family: 'Mulish', sans-serif;
+}
+
+.inner-header {
+    background-color: #0b1a32;
+    color: white;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    padding: 0 5%;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+.inner-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.page-icon {
+    width: 28px;
+    height: 28px;
+}
+
+.page-title {
+    font-weight: 800;
+    font-size: 18px;
+    border-bottom: 1px dashed #fff;
+    color: white;
+}
+
+.header-right-icons {
+    display: flex;
+    gap: 40px;
+}
+
+.icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    color: white;
+}
+
+.icon-item img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.icon-item span {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.services-content {
+    margin-top: 100px;
+    padding: 40px 5%;
+}
+
+.services-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.service-card {
+    background-color: #b8cfe8;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 50px;
+    border-radius: 16px;
+}
+
+.service-main-info {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.service-icon {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.service-text {
+    color: #0b1a32;
+    font-weight: 800;
+    font-size: 20px;
+}
+
+.see-details-btn {
+    background-color: #5b87b8;
+    color: white;
+    border: none;
+    padding: 14px 50px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.see-details-btn:hover {
+    background-color: #0b1a32;
+}

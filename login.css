@@ -1,0 +1,107 @@
+/* --- login.css --- */
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 90px;
+    background-color: #f0f4f8;
+}
+
+.login-card {
+    background-color: #dde8f5;
+    padding: 50px 60px;
+    border-radius: 25px;
+    width: 100%;
+    max-width: 750px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.login-card h2 {
+    color: #0b1a32;
+    margin-bottom: 30px;
+    font-weight: 800;
+    font-size: 28px;
+}
+
+.input-group {
+    margin-bottom: 14px;
+}
+
+.login-card input[type="email"],
+.login-card input[type="password"] {
+    width: 100%;
+    padding: 18px 24px;
+    border: none;
+    border-radius: 50px;
+    background-color: #b8cfe8;
+    outline: none;
+    color: #0b1a32;
+    font-weight: 600;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+.login-card input::placeholder {
+    color: #0b1a32;
+    font-weight: 600;
+}
+
+.extra-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0 30px;
+    font-size: 14px;
+    color: #0b1a32;
+    font-weight: 600;
+}
+
+.extra-options label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.extra-options input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: #0b1a32;
+    cursor: pointer;
+}
+
+.forgot-pass {
+    color: #0b1a32;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.btn-login {
+    width: 55%;
+    padding: 16px;
+    background-color: #0b1a32;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-login:hover {
+    background-color: #1a2b48;
+}
+
+.foot-link {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #555;
+}
+
+.foot-link a {
+    color: #4a7fc1;
+    text-decoration: none;
+    font-weight: 600;
+}

@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clinic Booking</title>
+  <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Mulish', sans-serif;
+      background: #1a1a2e;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .page-wrapper {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      border: 2px solid #2a6496;
+      background: #fff;
+    }
+    .left-panel {
+      width: 420px;
+      min-width: 420px;
+      background: #e8edf2;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid #c8d4de;
+      overflow-y: auto;
+    }
+    .panel-header {
+      padding: 18px 24px 14px;
+      border-bottom: 1px solid #c8d4de;
+      position: sticky;
+      top: 0;
+      background: #e8edf2;
+      z-index: 10;
+    }
+    .panel-header h2 {
+      font-size: 15px;
+      font-weight: 800;
+      color: #0b1a32;
+    }
+    .specialties-list {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .specialty-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #b8cfe8;
+      border-radius: 12px;
+      padding: 14px 18px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .specialty-card:hover { background: #a0bcd8; }
+    .specialty-card.active {
+      background: #0b1a32;
+    }
+    .specialty-card.active .spec-name { color: #4a9fd4; }
+    .specialty-card.active .spec-sub  { color: #7aaac8; }
+    .specialty-card.active .spec-icon-wrap { background: #1a3a5c; }
+    .spec-icon-wrap {
+      width: 52px;
+      height: 52px;
+      background: #d6e6f4;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 26px;
+      transition: background 0.2s;
+    }
+    .spec-name {
+      font-size: 15px;
+      font-weight: 800;
+      color: #0b1a32;
+      margin-bottom: 3px;
+      transition: color 0.2s;
+    }
+
+    .spec-sub {
+      font-size: 12px;
+      color: #3a5a7a;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    .right-panel {
+      flex: 1;
+      background: #fff;
+      padding: 20px 24px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .hospital-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #b8cfe8;
+      border-radius: 12px;
+      padding: 14px 18px;
+      flex-shrink: 0;
+    }
+    .hospital-icon {
+      width: 42px;
+      height: 42px;
+      background: #2a6496;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .h-name { font-size: 14px; font-weight: 800; color: #0b1a32; margin-bottom: 2px; }
+    .h-meta { font-size: 11px; color: #2a4a6a; line-height: 1.6; margin-bottom: 4px; }
+    .h-rating { display: flex; align-items: center; gap: 4px; font-size: 11px; color: #2a4a6a; font-weight: 600; }
+    .star { color: #f5a623; }
+    .star.empty { color: #d9d9d9; }
+    .view-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      flex: 1;
+    }
+    .view-container.hidden { display: none; }
+    .doctors-section { display: none; flex-direction: column; gap: 12px; }
+    .doctors-section.visible { display: flex; }
+    .doctors-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #0b1a32;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e0e8f0;
+    }
+    .doctor-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: #fff;
+      border: 1px solid #dde6ef;
+      border-radius: 12px;
+      padding: 16px 18px;
+    }
+    .doc-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #b8cfe8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .doc-avatar svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .doc-main { flex: 1; }
+    .doc-name { font-size: 14px; font-weight: 800; color: #0b1a32; margin-bottom: 2px; }
+    .doc-title { font-size: 12px; color: #555; margin-bottom: 4px; }
+    .doc-rating { display: flex; align-items: center; gap: 4px; font-size: 12px; color: #444; font-weight: 600; margin-bottom: 8px; }
+
+    .doc-schedule { font-size: 11px; color: #555; line-height: 1.7; }
+
+    .doc-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .price-label { font-size: 12px; color: #555; }
+    .price-label span { color: #2a6496; font-weight: 800; }
+
+    .view-btn {
+      background: #b8cfe8;
+      color: #0b1a32;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Mulish', sans-serif;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .view-btn:hover { background: #8ab4d4; }
+
+    .empty-hint {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #bbb;
+      font-size: 13px;
+    }
+    .back-link {
+      background: none;
+      border: none;
+      color: #2a6496;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Mulish', sans-serif;
+      padding: 0;
+      align-self: flex-start;
+    }
+    .back-link:hover { text-decoration: underline; }
+    .section-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0b1a32;
+    }
+    .doctor-info-card {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      background: #fff;
+      border: 1px solid #dde6ef;
+      border-radius: 12px;
+      padding: 18px 20px;
+    }
+
+    .doctor-info-card .doc-avatar {
+      width: 64px;
+      height: 64px;
+      font-size: 32px;
+    }
+    .doctor-info-card .doc-name { font-size: 16px; margin-bottom: 2px; }
+    .doctor-info-card .doc-title { font-size: 13px; margin-bottom: 6px; }
+    .doc-stars { font-size: 16px; letter-spacing: 2px; margin-bottom: 6px; }
+    .doc-overall { font-size: 12px; color: #2a6496; font-weight: 700; }
+    .booking-grid {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .booking-left {
+      flex: 1;
+      min-width: 280px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .booking-right {
+      flex: 1;
+      min-width: 280px;
+    }
+    .info-card {
+      background: #b8cfe8;
+      border-radius: 12px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #0b1a32;
+    }
+
+    .info-row .info-value { color: #2a6496; font-weight: 800; }
+    .info-row .info-icon {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .info-row.location-row {
+      font-weight: 600;
+      font-size: 13px;
+      color: #2a4a6a;
+    }
+
+    .location-line {
+      display: inline;
+    }
+
+    .loc-inline-select {
+      background: transparent;
+      border: none;
+      font-family: 'Mulish', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: #2a4a6a;
+      cursor: pointer;
+      padding: 0;
+      max-width: 160px;
+    }
+
+    .loc-inline-select:hover,
+    .loc-inline-select:focus {
+      outline: none;
+      color: #0b1a32;
+      text-decoration: underline;
+    }
+
+    .time-card {
+      background: #b8cfe8;
+      border-radius: 12px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .card-heading {
+      font-size: 15px;
+      font-weight: 800;
+      color: #0b1a32;
+    }
+
+    .time-slot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: #fff;
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+
+    .time-slot-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #0b1a32;
+    }
+    .time-icon { display: flex; align-items: center; justify-content: center; color: #2a6496; }
+    .day-card {
+      background: #b8cfe8;
+      border-radius: 12px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .day-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: #fff;
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #0b1a32;
+    }
+    .day-row.disabled {
+      background: #c9c9c9;
+      color: #f0f0f0;
+    }
+    .day-row.disabled .choose-btn {
+      background: transparent;
+      border: 1px solid #f0f0f0;
+      color: #f0f0f0;
+      cursor: not-allowed;
+    }
+    .choose-btn {
+      background: #b8cfe8;
+      color: #0b1a32;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Mulish', sans-serif;
+      transition: background 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+    .choose-btn:hover { background: #8ab4d4; }
+    .choose-btn.selected {
+      background: #2a6496;
+      color: #fff;
+    }
+    .priority-text {
+      text-align: center;
+      font-size: 14px;
+      font-weight: 800;
+      color: #0b1a32;
+    }
+    .booking-btn {
+      background: #0b1a32;
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      padding: 18px;
+      font-size: 17px;
+      font-weight: 800;
+      font-family: 'Mulish', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .booking-btn:hover { background: #16263f; }
+    .booking-status {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #2a6496;
+      min-height: 18px;
+    }
+    .confirmation-page {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: #c8d8e8;
+      align-items: center;
+      justify-content: center;
+      overflow-y: auto;
+      padding: 32px 16px;
+    }
+    .confirmation-page.visible {
+      display: flex;
+    }
+    .conf-card {
+      background: #fff;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 480px;
+      padding: 32px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+      position: relative;
+    }
+    .conf-back-btn {
+      background: none;
+      border: none;
+      color: #2a6496;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Mulish', sans-serif;
+      padding: 0;
+      align-self: flex-start;
+      margin-bottom: 18px;
+    }
+    .conf-back-btn:hover { text-decoration: underline; }
+    .conf-doctor-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border: 1px solid #dde6ef;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+    }
+    .conf-doctor-card .doc-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #b8cfe8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .conf-doctor-card .doc-avatar svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .conf-doc-name { font-size: 14px; font-weight: 800; color: #0b1a32; margin-bottom: 2px; }
+    .conf-doc-title { font-size: 12px; color: #555; margin-bottom: 4px; }
+    .conf-doc-stars { font-size: 13px; letter-spacing: 1px; }
+    .conf-doc-reviews { font-size: 11px; color: #2a6496; font-weight: 700; margin-top: 2px; }
+
+    .conf-date-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #555;
+      margin-bottom: 8px;
+    }
+    .conf-date-badge {
+      display: inline-block;
+      background: #0b1a32;
+      color: #fff;
+      border-radius: 8px;
+      padding: 8px 18px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+    .conf-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .conf-input {
+      background: #b8cfe8;
+      border: none;
+      border-radius: 8px;
+      padding: 13px 16px;
+      font-size: 14px;
+      font-family: 'Mulish', sans-serif;
+      color: #0b1a32;
+      font-weight: 600;
+      outline: none;
+      transition: background 0.2s;
+      width: 100%;
+    }
+    .conf-input::placeholder { color: #3a5a7a; }
+    .conf-input:focus { background: #a0bcd8; }
+    .conf-price-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+      font-weight: 800;
+      color: #0b1a32;
+      margin-bottom: 6px;
+    }
+    .conf-price-val { color: #2a6496; font-size: 15px; }
+    .conf-address {
+      font-size: 12px;
+      color: #555;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+
+    .conf-submit-btn {
+      background: #0b1a32;
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      padding: 16px;
+      font-size: 15px;
+      font-weight: 800;
+      font-family: 'Mulish', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s;
+      width: 100%;
+    }
+
+    .conf-submit-btn:hover { background: #16263f; }
+
+    .conf-error {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #c0392b;
+      min-height: 18px;
+      margin-top: 8px;
+    }
+    .success-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: #c8d8e8;
+      align-items: center;
+      justify-content: center;
+    }
+    .success-overlay.visible {
+      display: flex;
+    }
+    .success-box {
+      background: #0b1a32;
+      border-radius: 18px;
+      padding: 36px 48px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      max-width: 420px;
+    }
+    .success-text {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.5;
+    }
+
+    .success-icon {
+      width: 48px;
+      height: 48px;
+      background: #27ae60;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <aside class="left-panel">
+    <div class="panel-header"><h2>Clinics</h2></div>
+    <div class="specialties-list" id="specialtiesList"></div>
+  </aside>
+
+  <main class="right-panel" id="rightPanel">
+    <div id="hospitalCard"></div>
+
+    <!-- Doctors list view -->
+    <div class="view-container" id="doctorsView">
+      <div class="doctors-section" id="doctorsSection">
+        <p class="doctors-title">Doctors</p>
+        <div id="doctorsList"></div>
+      </div>
+      <div class="empty-hint" id="emptyHint">← Select a clinic to see available doctors</div>
+    </div>
+    <div class="view-container hidden" id="detailView">
+      <button class="back-link" onclick="showDoctorsView()">← Back to doctors</button>
+      <p class="section-title">Doctor's information</p>
+      <div class="doctor-info-card" id="doctorInfoCard"></div>
+      <div class="booking-grid">
+        <div class="booking-left">
+          <div class="info-card">
+            <div class="info-row">
+              <span class="info-icon">
+                <svg width="20" height="20" fill="none" stroke="#0b1a32" stroke-width="1.8" viewBox="0 0 24 24">
+                  <path d="M3 7h18v10H3z"/><path d="M3 11h18"/><circle cx="7" cy="15" r="0.5" fill="#0b1a32"/>
+                </svg>
+              </span>
+              Clinic visit:<span class="info-value" id="priceVal"></span>
+            </div>
+            <div class="info-row">
+              <span class="info-icon">
+                <svg width="20" height="20" fill="none" stroke="#0b1a32" stroke-width="1.8" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>
+                </svg>
+              </span>
+              Waiting time : <span class="info-value" id="waitVal">17 min</span>
+            </div>
+            <div class="info-row location-row">
+              <span class="info-icon">
+                <svg width="20" height="20" fill="none" stroke="#0b1a32" stroke-width="1.8" viewBox="0 0 24 24">
+                  <path d="M12 21c-4-4-7-7.5-7-11a7 7 0 0114 0c0 3.5-3 7-7 11z"/><circle cx="12" cy="10" r="2.5"/>
+                </svg>
+              </span>
+              <span class="location-line">
+                <select id="areaSelect" class="loc-inline-select" onchange="onAreaChange()"></select>,
+                <select id="citySelect" class="loc-inline-select" onchange="onCityChange()"></select>
+                – <span id="buildingVal"></span>
+              </span>
+            </div>
+          </div>
+          <div class="time-card">
+            <p class="card-heading">Choose your preferred time</p>
+            <div class="time-slot">
+              <div class="time-slot-label">
+                <span class="time-icon">
+                  <svg width="18" height="18" fill="none" stroke="#2a6496" stroke-width="1.8" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>
+                  </svg>
+                </span>
+                from 3:00 PM to 5:00 PM
+              </div>
+              <button class="choose-btn" onclick="selectTime(this)">Choose</button>
+            </div>
+            <div class="time-slot">
+              <div class="time-slot-label">
+                <span class="time-icon">
+                  <svg width="18" height="18" fill="none" stroke="#2a6496" stroke-width="1.8" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>
+                  </svg>
+                </span>
+                from 6:00 PM to 8:00 PM
+              </div>
+              <button class="choose-btn" onclick="selectTime(this)">Choose</button>
+            </div>
+          </div>
+        </div>
+        <div class="booking-right">
+          <div class="day-card">
+            <p class="card-heading">Choose day</p>
+            <div id="daysList"></div>
+          </div>
+        </div>
+      </div>
+      <p class="priority-text">Priority entry with reservation</p>
+      <button class="booking-btn" id="bookBtn" onclick="confirmBooking()">Booking</button>
+      <p class="booking-status" id="bookingStatus"></p>
+    </div>
+  </main>
+</div>
+<!-- ══ Booking Confirmation Page ══ -->
+<div class="confirmation-page" id="confirmationPage">
+  <div class="conf-card">
+    <button class="conf-back-btn" onclick="closeConfirmationPage()">← Back</button>
+    <div class="conf-doctor-card" id="confDoctorCard"></div>
+    <p class="conf-date-label">Date of visit</p>
+    <div class="conf-date-badge" id="confDateBadge"></div>
+    <div class="conf-form">
+      <input class="conf-input" id="confName"    type="text" placeholder="Full Name" />
+      <input class="conf-input" id="confPhone"   type="tel"  placeholder="Phone" />
+      <input class="conf-input" id="confMedical" type="text" placeholder="Medical number, if available" />
+    </div>
+    <div class="conf-price-row">
+      Total price
+      <span class="conf-price-val" id="confPriceVal"></span>
+    </div>
+    <div class="conf-address">
+      <svg width="14" height="14" fill="none" stroke="#555" stroke-width="1.8" viewBox="0 0 24 24">
+        <path d="M12 21c-4-4-7-7.5-7-11a7 7 0 0114 0c0 3.5-3 7-7 11z"/><circle cx="12" cy="10" r="2.5"/>
+      </svg>
+      <span id="confAddressText"></span>
+    </div>
+    <button class="conf-submit-btn" onclick="submitConfirmation()">Booking confirmation</button>
+    <p class="conf-error" id="confError"></p>
+  </div>
+</div>
+<!-- ══ Success Overlay ══ -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-box">
+    <span class="success-text">The booking has been<br>successfully confirmed</span>
+    <div class="success-icon">
+      <svg width="26" height="26" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24">
+        <path d="M20 6L9 17l-5-5"/>
+      </svg>
+    </div>
+  </div>
+</div>
+<script>
+/* ================= Data ================= */
+const specialties = [
+  { name: 'Cardiology Clinic',              sub: 'Heart & blood vessels',  icon: '🫀' },
+  { name: 'Dermatology Clinic',             sub: 'Skin, hair & nails',     icon: '🧴' },
+  { name: 'Pediatrics Clinic',              sub: "Children's Health",       icon: '👶' },
+  { name: 'Gynecology & Obstetrics Clinic', sub: "Women's & pregnancy",     icon: '🤰' },
+  { name: 'ENT',                            sub: 'Ear, nose & throat',      icon: '👂' },
+  { name: 'Dentistry',                      sub: 'Teeth & oral care',       icon: '🦷' },
+  { name: 'Orthopedics',                    sub: 'Bones & Joints',          icon: '🦴' },
+  { name: 'Ophthalmology',                  sub: 'Eye Care',                icon: '👁️' },
+  { name: 'Neurology Clinic',               sub: 'Brain & nerve care.',     icon: '🧠' },
+];
+const doctorsData = {
+  'Cardiology Clinic': [
+    { name: 'DR. Mohamed Ali',    title: 'Consultant Cardiologist', rating: '4.8', reviews: '320', price: '350', schedule: ['Tomorrow 5:00 PM', 'Tomorrow 6:20 PM'], avatar: '👨‍⚕️' },
+    { name: 'DR. Osama Ali',      title: 'Cardiology Specialist',   rating: '4.6', reviews: '260', price: '400', schedule: ['Thu 2:00–4:00 PM', 'Sat 11:00 AM'], avatar: '👨‍⚕️' },
+    { name: 'DR. Emad',           title: 'Cardiology Specialist',   rating: '4.6', reviews: '260', price: '400', schedule: ['Thu 2:00–4:00 PM', 'Sat 11:00 AM'], avatar: '👨‍⚕️' },
+    { name: 'DR. Sarah Mohammed', title: 'Consultant Cardiologist', rating: '4.8', reviews: '320', price: '350', schedule: ['Tomorrow 5:00 PM', 'Tomorrow 6:20 PM'], avatar: '👩‍⚕️' },
+  ],
+  'Dermatology Clinic': [
+    { name: 'DR. Mona Hassan',    title: 'Dermatology Consultant',  rating: '4.7', reviews: '210', price: '300', schedule: ['Sat 10:00 AM', 'Sun 2:00 PM'], avatar: '👩‍⚕️' },
+    { name: 'DR. Karim Samy',     title: 'Dermatology Specialist',  rating: '4.5', reviews: '180', price: '280', schedule: ['Mon 11:00 AM', 'Wed 3:00 PM'], avatar: '👨‍⚕️' },
+  ],
+  'Pediatrics Clinic': [
+    { name: 'DR. Khaled Omar',    title: 'Pediatrics Consultant',   rating: '4.9', reviews: '400', price: '320', schedule: ['Daily 9:00 AM', 'Daily 1:00 PM'], avatar: '👨‍⚕️' },
+    { name: 'DR. Hana Youssef',   title: 'Pediatrics Specialist',   rating: '4.7', reviews: '290', price: '300', schedule: ['Tue 10:00 AM', 'Thu 4:00 PM'], avatar: '👩‍⚕️' },
+  ],
+  'Gynecology & Obstetrics Clinic': [
+    { name: 'DR. Dina Fouad',     title: 'Gynecology Consultant',   rating: '4.8', reviews: '350', price: '450', schedule: ['Sun 11:00 AM', 'Tue 3:00 PM'], avatar: '👩‍⚕️' },
+  ],
+  'ENT': [
+    { name: 'DR. Tarek Nasser',   title: 'ENT Specialist',          rating: '4.6', reviews: '200', price: '280', schedule: ['Mon 9:00 AM', 'Wed 2:00 PM'], avatar: '👨‍⚕️' },
+  ],
+  'Dentistry': [
+    { name: 'DR. Reem Salah',     title: 'Dental Consultant',       rating: '4.7', reviews: '270', price: '350', schedule: ['Sat 10:00 AM', 'Mon 1:00 PM'], avatar: '👩‍⚕️' },
+    { name: 'DR. Osama Fathi',    title: 'Dental Specialist',       rating: '4.5', reviews: '190', price: '300', schedule: ['Sun 9:00 AM', 'Tue 3:00 PM'], avatar: '👨‍⚕️' },
+  ],
+  'Orthopedics': [
+    { name: 'DR. Sherif Kamal',   title: 'Orthopedics Consultant',  rating: '4.8', reviews: '310', price: '400', schedule: ['Thu 11:00 AM', 'Sat 2:00 PM'], avatar: '👨‍⚕️' },
+  ],
+  'Ophthalmology': [
+    { name: 'DR. Layla Ibrahim',  title: 'Eye Specialist',          rating: '4.6', reviews: '220', price: '320', schedule: ['Mon 10:00 AM', 'Wed 4:00 PM'], avatar: '👩‍⚕️' },
+  ],
+  'Neurology Clinic': [
+    { name: 'DR. Amr Sayed',      title: 'Neurology Consultant',    rating: '4.9', reviews: '380', price: '500', schedule: ['Sun 1:00 PM', 'Tue 5:00 PM'], avatar: '👨‍⚕️' },
+  ],
+};
+const cityData = {
+  'Cairo': {
+    areas: ['Nasr City', 'Heliopolis', 'El Shorouk City', 'Madinty', 'Zamalek', 'Ain Shams'],
+    hospital: 'The British Hospital – Cairo',
+    distanceBase: 1.2,
+    rating: '4.3',
+    reviews: '210',
+  },
+  'Giza': {
+    areas: ['Dokki', 'Mohandessin', 'Haram', '6th of October', 'Sheikh Zayed'],
+    hospital: 'The British Hospital – Giza',
+    distanceBase: 0.8,
+    rating: '4.2',
+    reviews: '180',
+  },
+  'Alexandria': {
+    areas: ['Smouha', 'Sidi Bishr', 'Montaza', 'Stanley', 'Agami'],
+    hospital: 'The British Hospital – Alexandria',
+    distanceBase: 2.1,
+    rating: '4.6',
+    reviews: '320',
+  },
+  'Port Said': {
+    areas: ['Port Fouad', 'El Arab', 'El Zohour'],
+    hospital: 'The British Hospital – Port Said',
+    distanceBase: 1.0,
+    rating: '4.0',
+    reviews: '100',
+  },
+  'Suez': {
+    areas: ['El Arbeen', 'Faisal', 'El Ganayen'],
+    hospital: 'The British Hospital – Suez',
+    distanceBase: 1.3,
+    rating: '4.1',
+    reviews: '120',
+  },
+  'Sinai': {
+    areas: ['Sharm El Sheikh', 'Dahab', 'Nuweiba'],
+    hospital: 'The British Hospital – Sinai',
+    distanceBase: 2.5,
+    rating: '3.9',
+    reviews: '80',
+  },
+  'Beni Suef': {
+    areas: ['Beni Suef City', 'Nasser', 'El Fashn'],
+    hospital: 'The British Hospital – Beni Suef',
+    distanceBase: 0.9,
+    rating: '4.0',
+    reviews: '90',
+  },
+  'Assiut': {
+    areas: ['Assiut City', 'Dairut', 'Manfalut'],
+    hospital: 'The British Hospital – Assiut',
+    distanceBase: 1.1,
+    rating: '4.3',
+    reviews: '200',
+  },
+  'Luxor': {
+    areas: ['Luxor City', 'Karnak', 'New Luxor'],
+    hospital: 'The British Hospital – Luxor',
+    distanceBase: 1.8,
+    rating: '4.2',
+    reviews: '130',
+  },
+  'Aswan': {
+    areas: ['Aswan City', 'Kom Ombo', 'Edfu'],
+    hospital: 'The British Hospital – Aswan',
+    distanceBase: 1.4,
+    rating: '4.0',
+    reviews: '110',
+  },
+};
+const visitWait = '17 min';
+const pageParams = new URLSearchParams(window.location.search);
+const paramHospital = pageParams.get('hospital');
+const paramDist     = pageParams.get('dist');
+const paramRating   = pageParams.get('rating');
+const paramReviews  = pageParams.get('reviews');
+const paramCity     = pageParams.get('city');
+const paramDistrict = pageParams.get('district');
+const initialCity = (paramCity && cityData[paramCity]) ? paramCity : Object.keys(cityData)[0];
+const initialArea = (paramDistrict && cityData[initialCity].areas.includes(paramDistrict))
+  ? paramDistrict
+  : cityData[initialCity].areas[0];
+let initialDistKm = null;
+if (paramDist) {
+  const m = paramDist.match(/[\d.]+/);
+  if (m) initialDistKm = parseFloat(m[0]).toFixed(1);
+}
+if (paramHospital) cityData[initialCity].hospital = decodeURIComponent(paramHospital).replace(/\+/g, ' ');
+if (paramRating)   cityData[initialCity].rating   = paramRating;
+if (paramReviews)  cityData[initialCity].reviews  = paramReviews;
+function hashStr(s) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return h;
+}
+
+function buildingFor(area) {
+  return 'Building ' + ((hashStr(area) % 250) + 10);
+}
+
+function distanceFor(city, area) {
+  if (city === initialCity && area === initialArea && initialDistKm) return initialDistKm;
+  const base = cityData[city].distanceBase;
+  const extra = (hashStr(area) % 20) / 10;
+  return (base + extra).toFixed(1);
+}
+/* ================= Hospital card ================= */
+function renderHospitalCard(city, area) {
+  const info = cityData[city];
+  const dist = distanceFor(city, area);
+  document.getElementById('hospitalCard').innerHTML = `
+    <div class="hospital-card">
+      <div class="hospital-icon">
+        <svg width="20" height="20" fill="none" stroke="white" stroke-width="1.8" viewBox="0 0 24 24">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <path d="M9 3v18M15 3v18M3 9h18M3 15h18"/>
+        </svg>
+      </div>
+      <div>
+        <p class="h-name">${info.hospital}</p>
+        <p class="h-meta">${area}, ${city} – ${dist}km away<br>Open now + 24/7 Emergency</p>
+        <div class="h-rating"><span class="star">★</span> ${info.rating} (${info.reviews} reviews)</div>
+      </div>
+    </div>
+  `;
+}
+
+renderHospitalCard(initialCity, initialArea);
+
+/* ================= Specialties list ================= */
+
+document.getElementById('specialtiesList').innerHTML = specialties.map(s => `
+  <div class="specialty-card" onclick="selectSpec('${s.name}', this)">
+    <div class="spec-icon-wrap">${s.icon}</div>
+    <div>
+      <p class="spec-name">${s.name}</p>
+      <p class="spec-sub">${s.sub}</p>
+    </div>
+  </div>
+`).join('');
+function selectSpec(name, el) {
+  document.querySelectorAll('.specialty-card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  const doctors = doctorsData[name] || [];
+  document.getElementById('emptyHint').style.display = 'none';
+  document.getElementById('doctorsList').innerHTML = doctors.map((d, i) => `
+    <div class="doctor-card">
+      <div class="doc-avatar">${avatarSvg(d)}</div>
+      <div class="doc-main">
+        <p class="doc-name">${d.name}</p>
+        <p class="doc-title">${d.title}</p>
+        <div class="doc-rating"><span class="star">★</span> ${d.rating} (${d.reviews} reviews)</div>
+        <div class="doc-schedule">${d.schedule.join('<br>')}</div>
+      </div>
+      <div class="doc-right">
+        <p class="price-label">Clinic visit:<span> ${d.price} EGP</span></p>
+        <button class="view-btn" onclick='showDoctorDetail(${JSON.stringify(d).replace(/'/g, "&apos;")})'>View details</button>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('doctorsSection').classList.add('visible');
+  showDoctorsView();
+}
+function showDoctorsView() {
+  document.getElementById('doctorsView').classList.remove('hidden');
+  document.getElementById('detailView').classList.add('hidden');
+}
+
+function showDetailView() {
+  document.getElementById('doctorsView').classList.add('hidden');
+  document.getElementById('detailView').classList.remove('hidden');
+}
+
+/* ================= Doctor detail / booking ================= */
+
+let selectedDay = null;
+let selectedTime = null;
+let selectedLocation = '';
+
+function starsHtml(rating) {
+  const full = Math.round(parseFloat(rating));
+  let html = '';
+  for (let i = 0; i < 5; i++) {
+    html += `<span class="star ${i < full ? '' : 'empty'}">★</span>`;
+  }
+  return html;
+}
+const avatarPalette = ['#2a6496', '#4a9fd4', '#5b87b8', '#3a7ca5', '#6ba3d6', '#1f5f8b'];
+function getInitials(name) {
+  const parts = name.replace(/^DR\.\s*/i, '').trim().split(/\s+/);
+  return parts.slice(0, 2).map(p => p[0].toUpperCase()).join('');
+}
+function avatarSvg(doc) {
+  const initials = getInitials(doc.name);
+  const color = avatarPalette[hashStr(doc.name) % avatarPalette.length];
+  return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${doc.name}">
+    <circle cx="50" cy="50" r="50" fill="${color}"/>
+    <text x="50" y="58" font-family="Mulish, sans-serif" font-size="34" font-weight="800" fill="#ffffff" text-anchor="middle">${initials}</text>
+  </svg>`;
+}
+function showDoctorDetail(doc) {
+  currentDoc = doc;
+  document.getElementById('doctorInfoCard').innerHTML = `
+    <div class="doc-avatar">${avatarSvg(doc)}</div>
+    <div>
+      <p class="doc-name">${doc.name}</p>
+      <p class="doc-title">${doc.title}</p>
+      <div class="doc-stars">${starsHtml(doc.rating)}</div>
+      <p class="doc-overall">Overall rating from ${doc.reviews} visitors</p>
+    </div>
+  `;
+  document.getElementById('priceVal').textContent = ` ${doc.price} EGP`;
+  document.getElementById('waitVal').textContent = visitWait;
+  populateCities();
+  document.getElementById('citySelect').value = initialCity;
+  populateAreas(initialCity);
+  document.getElementById('areaSelect').value = initialArea;
+  updateLocationVal();
+  /* Build the "Choose day" list */
+  const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const unavailableIndex = 2; // 3rd day shown as fully booked
+  let daysHtml = '';
+  for (let i = 1; i <= 4; i++) {
+    const d = new Date();
+    d.setDate(d.getDate() + i);
+    const label = `${dayNames[d.getDay()]}, ${monthNames[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+    const isDisabled = (i - 1) === unavailableIndex;
+    daysHtml += `
+      <div class="day-row ${isDisabled ? 'disabled' : ''}">
+        <span>${label}</span>
+        <button class="choose-btn" ${isDisabled ? 'disabled' : ''} onclick="selectDay(this)">Choose</button>
+      </div>
+    `;
+  }
+  document.getElementById('daysList').innerHTML = daysHtml;
+  /* Reset selections */
+  selectedDay = null;
+  selectedTime = null;
+  document.querySelectorAll('.choose-btn.selected').forEach(b => b.classList.remove('selected'));
+  document.getElementById('bookingStatus').textContent = '';
+  /* Remember doctor name for the booking confirmation */
+  document.getElementById('detailView').dataset.docName = doc.name;
+  showDetailView();
+}
+/* ---- Location selectors ---- */
+function populateCities() {
+  const citySelect = document.getElementById('citySelect');
+  citySelect.innerHTML = Object.keys(cityData).map(c => `<option value="${c}">${c}</option>`).join('');
+}
+function populateAreas(city) {
+  const areaSelect = document.getElementById('areaSelect');
+  areaSelect.innerHTML = cityData[city].areas.map(a => `<option value="${a}">${a}</option>`).join('');
+}
+function updateLocationVal() {
+  const city = document.getElementById('citySelect').value;
+  const area = document.getElementById('areaSelect').value;
+  selectedLocation = `${area}, ${city}`;
+  document.getElementById('buildingVal').textContent = buildingFor(area);
+  renderHospitalCard(city, area);
+}
+
+function onCityChange() {
+  populateAreas(document.getElementById('citySelect').value);
+  updateLocationVal();
+}
+
+function onAreaChange() {
+  updateLocationVal();
+}
+
+/* ---- Day / time selection ---- */
+
+function selectDay(btn) {
+  document.querySelectorAll('#daysList .choose-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedDay = btn.parentElement.querySelector('span').textContent;
+}
+
+function selectTime(btn) {
+  document.querySelectorAll('.time-card .choose-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedTime = btn.parentElement.querySelector('.time-slot-label').textContent.trim();
+}
+
+function confirmBooking() {
+  const status = document.getElementById('bookingStatus');
+  if (!selectedDay || !selectedTime) {
+    status.style.color = '#c0392b';
+    status.textContent = 'Please choose a day and a time before booking.';
+    return;
+  }
+  openConfirmationPage();
+}
+
+/* ================= Confirmation Page ================= */
+
+let currentDoc = null;
+
+function openConfirmationPage() {
+  const doc = currentDoc;
+  if (!doc) return;
+
+  /* Fill doctor card */
+  document.getElementById('confDoctorCard').innerHTML = `
+    <div class="doc-avatar">${avatarSvg(doc)}</div>
+    <div>
+      <p class="conf-doc-name">${doc.name}</p>
+      <p class="conf-doc-title">${doc.title}</p>
+      <div class="conf-doc-stars">${starsHtml(doc.rating)}</div>
+      <p class="conf-doc-reviews">Overall rating from ${doc.reviews} visitors</p>
+    </div>
+  `;
+
+  /* Date & price */
+  document.getElementById('confDateBadge').textContent = selectedDay + (selectedTime ? ', ' + selectedTime : '');
+  document.getElementById('confPriceVal').textContent = doc.price + ' EGP';
+
+  /* Address */
+  const city = document.getElementById('citySelect').value;
+  const area = document.getElementById('areaSelect').value;
+  const building = document.getElementById('buildingVal').textContent;
+  document.getElementById('confAddressText').textContent = `${area}, ${city} neighborhood, ${building}`;
+
+  /* Reset form */
+  document.getElementById('confName').value = '';
+  document.getElementById('confPhone').value = '';
+  document.getElementById('confMedical').value = '';
+  document.getElementById('confError').textContent = '';
+  document.getElementById('successOverlay').classList.remove('visible');
+
+  document.getElementById('confirmationPage').classList.add('visible');
+}
+
+function closeConfirmationPage() {
+  document.getElementById('confirmationPage').classList.remove('visible');
+}
+function submitConfirmation() {
+  const name  = document.getElementById('confName').value.trim();
+  const phone = document.getElementById('confPhone').value.trim();
+  const err   = document.getElementById('confError');
+  if (!name || !phone) {
+    err.textContent = 'Please fill in Full Name and Phone.';
+    return;
+  }
+  err.textContent = '';
+  document.getElementById('successOverlay').classList.add('visible');
+  setTimeout(function() {
+    window.location.href = 'services.html';
+  }, 2000);
+}
+</script>
+</body>
+</html>

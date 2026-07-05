@@ -1,0 +1,270 @@
+/* --- laboratory.css --- */
+
+body {
+    background-color: #fff;
+    margin: 0;
+    overflow-x: hidden;
+    font-family: 'Mulish', sans-serif;
+}
+
+/* الهيدر */
+.inner-header {
+    background-color: #0b1a32;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+.inner-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.page-icon {
+    width: 25px;
+    height: 25px;
+}
+
+.page-title {
+    color: white;
+    font-weight: 700;
+    border-bottom: 1px dashed #fff;
+}
+
+.header-right-icons {
+    display: flex;
+    gap: 35px;
+}
+
+.icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    color: #fff;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.icon-item img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+/* Layout */
+.lab-main-layout {
+    display: flex;
+    margin-top: 90px;
+    height: calc(100vh - 90px);
+}
+
+/* Sidebar */
+.sidebar {
+    width: 320px;
+    background-color: #e8ecf0;
+    border-right: 1px solid #dde3ea;
+    padding-top: 20px;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
+.sidebar-title {
+    padding: 10px 25px 15px;
+    font-size: 15px;
+    color: #4a7fc1;
+    font-weight: 700;
+    border-bottom: 1px solid #d0d8e4;
+    margin-bottom: 5px;
+}
+
+.city-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.city-item {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #d0d8e4;
+}
+
+.city-header {
+    width: 100%;
+    padding: 18px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 15px;
+    color: #0b1a32;
+    box-sizing: border-box;
+}
+
+.city-item.active .city-header {
+    background-color: #b8cfe8;
+}
+
+.city-item:hover .city-header {
+    background-color: #d5e3f0;
+}
+
+.city-arrow {
+    font-size: 16px;
+    color: #7a9ab5;
+}
+
+.districts-list {
+    list-style: none;
+    padding: 5px 0 10px 0;
+    margin: 0;
+    background-color: #e8ecf0;
+}
+
+.districts-list li {
+    padding: 10px 25px 10px 45px;
+    font-size: 14px;
+    color: #4a5568;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.districts-list li::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background-color: #5b87b8;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.districts-list li:hover {
+    color: #0b1a32;
+}
+
+.districts-list li.selected-district {
+    background-color: #4a7fc1;
+    color: #fff !important;
+    border-radius: 8px;
+    margin: 0 10px;
+    padding: 10px 15px 10px 35px;
+    font-weight: 700 !important;
+}
+
+.districts-list li.selected-district::before {
+    background-color: #fff;
+}
+
+.focused-city {
+    color: #4a7fc1 !important;
+    font-weight: 700 !important;
+}
+
+/* المحتوى الرئيسي */
+.lab-content {
+    flex: 1;
+    padding: 40px 60px;
+    background-color: #fff;
+    overflow-y: auto;
+}
+
+.lab-search-input {
+    width: 100%;
+    max-width: 500px;
+    padding: 12px 25px;
+    border-radius: 30px;
+    border: 1px solid #eef2f6;
+    background-color: #f7faff;
+    margin-bottom: 35px;
+    outline: none;
+    font-family: 'Mulish', sans-serif;
+    font-size: 14px;
+}
+
+.lab-search-input:focus {
+    border-color: #bdd3f1;
+}
+
+.lab-cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.lab-item-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    background-color: #fff;
+    border: 1px solid #eef2f6;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.lab-item-card:hover {
+    border-color: #bdd3f1;
+    transform: translateX(5px);
+}
+
+.lab-item-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.lab-icon-circle {
+    width: 55px;
+    height: 55px;
+    background-color: #f0f4f9;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lab-icon-circle img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.lab-item-info h4 {
+    margin: 0;
+    font-size: 18px;
+    color: #0b1a32;
+    font-weight: 800;
+}
+
+.lab-item-info p {
+    margin: 5px 0 0;
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+.go-arrow {
+    font-size: 28px;
+    color: #cbd5e1;
+    font-weight: 300;
+}

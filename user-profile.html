@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Hub - Profile Settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="user-profile.css">
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+</head>
+<body>
+
+    <header class="inner-header">
+        <div class="inner-header-container">
+            <div class="header-left">
+                <div class="avatar-circle">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                    </svg>
+                </div>
+                <div class="greeting-text">
+                    <span class="hello-text">Hello <span id="display-user-name">Ahmed</span>,</span>
+                    <span class="wish-text">we wish you better health</span>
+                </div>
+            </div>
+
+            <nav class="header-right-icons">
+                <a href="#" class="icon-item"><img src="assets/images/ask.png" alt=""><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r=".5" fill="currentColor"/></svg><span>Ask?</span></a>
+                <a href="my-activity.html" class="icon-item"><img src="assets/images/myactivety.png" alt=""><span>My Activity</span></a>
+                <a href="user-profile.html" class="icon-item active-link"><img src="assets/images/profile.png" alt=""><circle cx="12" cy="8" r="4"/><span>Profile</span></a>
+                <a href="alerts.html" class="icon-item"><img src="assets/images/alert.png" alt=""><span>Alerts</span></a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="profile-main">
+        <div class="welcome-section">
+            <h2>Welcome to Medical Hub</h2>
+            <p>Sign up now and enjoy the best healthcare services</p>
+        </div>
+
+        <div class="settings-card">
+            <div class="setting-item">
+                <div class="setting-left"><span>The state</span></div>
+                <div class="setting-right">
+                    <img src="https://flagcdn.com/w20/eg.png" alt="flag" id="flag-img">
+                    <select id="country-select" class="custom-select">
+                        <option value="eg">Egypt</option>
+                        <option value="sa">Saudi Arabia</option>
+                        <option value="us">USA</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-left"><span>Language</span></div>
+                <select id="lang-select" class="custom-select">
+                    <option value="en">English</option>
+                    <option value="ar">العربية</option>
+                </select>
+            </div>
+
+            <div class="setting-item clickable" id="add-card-btn">
+                <div class="setting-left"><span>Credit card</span></div>
+                <span class="action-text">Add / Edit 💳</span>
+            </div>
+
+            <div class="setting-item clickable">
+                <div class="setting-left"><span>Favorites</span></div>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-left"><span>Theme</span></div>
+                <div class="theme-buttons">
+                    <button id="btn-dark" class="theme-btn">Dark 🌙</button>
+                    <button id="btn-light" class="theme-btn active-theme">Light 🌤</button>
+                </div>
+            </div>
+
+            <div class="settings-divider"></div>
+
+            <div class="setting-item clickable logout-item" id="logout-btn">
+                <div class="setting-left" style="color: red; font-weight: bold;"><span>Log out</span></div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="card-modal">
+        <div class="modal-box">
+            <h3 class="modal-title">Add Credit Card</h3>
+            <input class="modal-input" type="text" id="card-number" placeholder="Card number (16 digits)">
+            <input class="modal-input" type="text" id="card-name" placeholder="Cardholder name">
+            <div class="modal-row">
+                <input class="modal-input" type="text" placeholder="MM/YY">
+                <input class="modal-input" type="text" placeholder="CVV">
+            </div>
+            <div class="modal-actions">
+                <button class="btn-cancel" id="modal-cancel">Cancel</button>
+                <button class="btn-save" id="modal-save">Save card</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="user-profile.js"></script>
+</body>
+</html>

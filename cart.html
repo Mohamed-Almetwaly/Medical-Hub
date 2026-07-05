@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Hub - Choose Pharmacy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Mulish', sans-serif; }
+        body { background-color: #ffffff; width: 100%; }
+        .main-header { background-color: #0c1a30; padding: 18px 0; width: 100%; }
+        .header-container { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: flex-start; }
+        .logo-area { display: flex; align-items: center; gap: 12px; }
+        .logo-img { height: 40px !important; width: auto !important; object-fit: contain; display: block; }
+        .logo-area h1 { color: #ffffff; font-size: 22px; font-weight: 700; }
+        .logo-area h1 span { font-size: 15px; font-weight: 400; color: #cbd5e1; }
+        .cart-main { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+        .product-summary-card {
+            background: #ffffff; border: 1px solid #e4e6ea; border-radius: 16px;
+            padding: 25px 35px; display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02); margin-bottom: 35px;
+        }
+        .product-details { display: flex; align-items: center; gap: 25px; }
+        .product-details img { width: 75px; height: 75px; object-fit: contain; }
+        .product-info-text { display: flex; flex-direction: column; gap: 12px; }
+        .product-title { font-size: 16px; font-weight: 700; color: #1e293b; }
+        .quantity-controls { display: flex; align-items: center; gap: 15px; color: #475569; }
+        .quantity-btn { background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.1s; }
+        .quantity-btn:active { transform: scale(0.9); }
+        .product-total-price { font-size: 17px; font-weight: 800; color: #2a6496; }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+        .back-to-products-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: none;
+            border: 2px solid #4e82a6;
+            color: #4e82a6;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+        }
+        .back-to-products-btn:hover {
+            background: #4e82a6;
+            color: #fff;
+        }
+        .section-title-btn { background-color: #4e82a6; color: #ffffff; border: none; border-radius: 6px; padding: 12px 28px; font-size: 14px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+        .section-title-btn:hover { background-color: #3b6b8c; }
+        .pharmacies-list { display: flex; flex-direction: column; gap: 25px; }
+        .pharmacy-card { border: 1px solid #cbd5e1; border-radius: 12px; padding: 24px 35px; display: flex; align-items: center; justify-content: space-between; background: #ffffff; cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s; }
+        .pharmacy-card:hover { border-color: #4e82a6; box-shadow: 0 4px 12px rgba(78, 130, 166, 0.08); }
+        .pharmacy-left { display: flex; align-items: center; gap: 25px; }
+        .pharmacy-logo-box { width: 70px; height: 70px; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 5px; background: #ffffff; }
+        .pharmacy-logo-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .pharmacy-meta { display: flex; flex-direction: column; gap: 6px; }
+        .pharmacy-name { font-size: 16px; font-weight: 800; color: #0f172a; }
+        .rating-stars { color: #ffb100; font-size: 15px; letter-spacing: 2px; }
+        .delivery-info { font-size: 13px; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 6px; }
+        .pharmacy-actions { display: flex; align-items: center; gap: 30px; }
+        .btn-price-info { background-color: #b3cbe3; color: #0f172a; border: none; border-radius: 8px; padding: 12px 24px; font-size: 14px; font-weight: 700; white-space: nowrap; pointer-events: none; }
+        .btn-next { background-color: #b3cbe3; color: #0f172a; border: none; border-radius: 8px; padding: 12px 35px; font-size: 14px; font-weight: 700; cursor: pointer; }
+        .back-btn { background-color: #2a6496; color: #ffffff; border: none; border-radius: 8px; padding: 10px 20px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 15px; text-decoration: none; display: inline-block; }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo-area">
+                <img src="assets/images/logo.png" alt="Medical Hub Logo" class="logo-img">
+                <h1>MEDICAL HUB <span>.com</span></h1>
+            </div>
+        </div>
+    </header>
+    <main class="cart-main">
+        <div class="product-summary-card" id="cart-summary-card" style="display: none;">
+            <div class="product-details">
+                <img id="cart-product-img" src="" alt="Product Image">
+                <div class="product-info-text">
+                    <span class="product-title" id="cart-product-title">Loading Product...</span>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="event.stopPropagation(); adjustQuantity(1)">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2a6496" stroke-width="2.5">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                            </svg>
+                        </button>
+                        <span id="cart-quantity-val" style="font-weight: 700; font-size: 15px;">1</span>
+                        <button class="quantity-btn" onclick="event.stopPropagation(); decreaseOrRemove()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="product-total-price" id="cart-product-price">0 EGP</div>
+        </div>
+        <div id="empty-message" style="text-align: center; padding: 40px 0; font-weight: 700; color: #64748b; display: none;">
+            <p>Your cart is empty. Please select a product from the list first.</p>
+            <a href="pharmacy-products.html" class="back-btn">Go to Products</a>
+        </div>
+        <div id="pharmacy-section-container">
+            <div class="section-header">
+                <a href="pharmacy-products.html" class="back-to-products-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    Back to Products
+                </a>
+            </div>
+            <div class="pharmacies-list">
+                <div class="pharmacy-card" onclick="goToCheckout('Blue El-Shorouk', 20)">
+                    <div class="pharmacy-left">
+                        <div class="pharmacy-logo-box">
+                            <img src="assets/images/Blue El-Shorouk.png" alt="Blue El-Shorouk">
+                        </div>
+                        <div class="pharmacy-meta">
+                            <span class="pharmacy-name">Blue El-Shorouk</span>
+                            <span class="rating-stars">★★★★☆</span>
+                            <div class="delivery-info">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2a6496" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                                20 EGP
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pharmacy-actions">
+                        <button class="btn-price-info"><span class="dyn-count-txt">1 product</span> - <span class="dyn-price">0 EGP</span></button>
+                        <button class="btn-next">Next</button>
+                    </div>
+                </div>
+                <div class="pharmacy-card" onclick="goToCheckout('Al-Ansari Jannah Mall', 30)">
+                    <div class="pharmacy-left">
+                        <div class="pharmacy-logo-box">
+                            <img src="assets/images/Al-Ansari Jannah Mall.png" alt="Al-Ansari Jannah Mall">
+                        </div>
+                        <div class="pharmacy-meta">
+                            <span class="pharmacy-name">Al-Ansari Jannah Mall</span>
+                            <span class="rating-stars">★★★★☆</span>
+                            <div class="delivery-info">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2a6496" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                                30 EGP
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pharmacy-actions">
+                        <button class="btn-price-info"><span class="dyn-count-txt">1 product</span> - <span class="dyn-price">0 EGP</span></button>
+                        <button class="btn-next">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        let currentProduct = null;
+        function goToCheckout(pharmacyName, deliveryFee) {
+            localStorage.setItem('selectedPharmacyName', pharmacyName);
+            localStorage.setItem('deliveryFee', deliveryFee);
+            window.location.href = 'checkout.html';
+        }
+        function updateUI() {
+            if (!currentProduct) { showEmptyCart(); return; }
+            const total = currentProduct.basePrice * currentProduct.quantity;
+            document.getElementById('cart-quantity-val').textContent = currentProduct.quantity;
+            document.getElementById('cart-product-price').textContent = total + " EGP";
+            document.querySelectorAll('.dyn-count-txt').forEach(el => {
+                el.textContent = currentProduct.quantity + (currentProduct.quantity === 1 ? " product" : " products");
+            });
+            document.querySelectorAll('.dyn-price').forEach(el => {
+                el.textContent = total + " EGP";
+            });
+        }
+        function adjustQuantity(amount) {
+            if (!currentProduct) return;
+            currentProduct.quantity += amount;
+            localStorage.setItem('selectedProduct', JSON.stringify(currentProduct));
+            updateUI();
+        }
+        function decreaseOrRemove() {
+            if (!currentProduct) return;
+            if (currentProduct.quantity > 1) {
+                currentProduct.quantity -= 1;
+                localStorage.setItem('selectedProduct', JSON.stringify(currentProduct));
+                updateUI();
+            } else {
+                localStorage.removeItem('selectedProduct');
+                currentProduct = null;
+                showEmptyCart();
+            }
+        }
+        function showEmptyCart() {
+            document.getElementById('cart-summary-card').style.display = 'none';
+            document.getElementById('pharmacy-section-container').style.display = 'none';
+            document.getElementById('empty-message').style.display = 'block';
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+            const savedProduct = localStorage.getItem('selectedProduct');
+            if (savedProduct) {
+                currentProduct = JSON.parse(savedProduct);
+                document.getElementById('cart-summary-card').style.display = 'flex';
+                document.getElementById('pharmacy-section-container').style.display = 'block';
+                document.getElementById('empty-message').style.display = 'none';
+                document.getElementById('cart-product-img').setAttribute('src', currentProduct.img || 'assets/images/logo.png');
+                document.getElementById('cart-product-title').textContent = currentProduct.name || 'Medical Product';
+                updateUI();
+            } else {
+                showEmptyCart();
+            }
+        });
+    </script>
+</body>
+</html>

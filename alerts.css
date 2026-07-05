@@ -1,0 +1,103 @@
+/* --- alerts.css --- */
+body {
+    background-color: #1a1a1a; 
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.inner-header {
+    background-color: #0b1a32;
+    width: 100%;
+    z-index: 10;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+}
+.inner-header .logo-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.header-right-icons {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+.icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    transition: color 0.3s;
+}
+.icon-item img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    opacity: 0.6;
+}
+.icon-item:hover {
+    color: #ffffff;
+}
+.icon-item:hover img {
+    opacity: 1;
+}
+.active-link {
+    opacity: 1 !important;
+    border-bottom: 2px solid #ffffff;
+    padding-bottom: 2px;
+}
+.alerts-viewport {
+    flex: 1;
+    width: 100%;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+.no-alerts-box {
+    background-color: #0b1a32;
+    padding: 32px 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    box-shadow: 0 8px 24px rgba(11, 26, 50, 0.15);
+}
+.no-alerts-text {
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+}
+.bell-icon {
+    flex-shrink: 0;
+    animation: bellSway 3s infinite ease-in-out;
+}
+@keyframes bellSway {
+    0%, 100% { transform: rotate(0); }
+    5%, 15% { transform: rotate(10deg); }
+    10%, 20% { transform: rotate(-10deg); }
+    25% { transform: rotate(0); }
+}
+@media (max-width: 768px) {
+    .no-alerts-box {
+        padding: 24px 25px;
+        width: 90%;
+        max-width: 420px;
+    }
+    .no-alerts-text {
+        font-size: 16px;
+    }
+}

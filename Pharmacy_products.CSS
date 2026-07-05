@@ -1,0 +1,229 @@
+/* --- Pharmacy_products.CSS --- */
+
+/* تصفير الإعدادات الافتراضية لمنع تداخل ملفات المشروع القديمة */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Mulish', sans-serif;
+}
+
+body {
+    background-color: #ffffff;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* --- تنسيق الهيدر الكحلي الاحترافي وثباته المطلق --- */
+.main-header {
+    background-color: #0c1a30;
+    width: 100%;
+    padding: 20px 0;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* تحجيم وضبط اللوجو والصورة لمنع تضخمها المفاجئ */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-img {
+    height: 45px; /* تثبيت الحجم المناسب تماماً للوجو كباقي الصفحات */
+    width: auto;
+    object-fit: contain;
+}
+
+.logo h1 {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.logo h1 span {
+    font-size: 16px;
+    font-weight: 400;
+    color: #cbd5e1;
+}
+
+.ph-header-title {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+/* --- تنسيق المحتوى الداخلي وشريط البحث --- */
+.php-main {
+    max-width: 1200px;
+    margin: 40px auto 0 auto;
+    padding: 0 20px;
+}
+
+.php-search-wrap {
+    margin-bottom: 35px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.php-search-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #f0f2f5;
+    border: 1px solid #e2e8f0;
+    border-radius: 30px;
+    padding: 12px 20px;
+    width: 100%;
+    max-width: 560px;
+}
+
+.php-search-box input {
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    color: #333333;
+    outline: none;
+    width: 100%;
+}
+
+.php-search-icon {
+    flex-shrink: 0;
+}
+
+/* --- حاوية الكروت والشبكة المنسقة --- */
+.php-grid-wrap {
+    border: 1px solid #e4e6ea;
+    border-radius: 16px;
+    padding: 35px 30px;
+    background: #ffffff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    margin-bottom: 50px;
+}
+
+.php-cat-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #2a6496;
+    margin-bottom: 30px;
+}
+
+/* شبكة متزنة ومقسمة لـ 5 كروت في الصف الواحد بالتساوي */
+.php-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 25px 20px;
+}
+
+/* كارت المنتج الاحترافي المتناسق */
+.php-card {
+    border: 1px solid #e6ecf4;
+    border-radius: 14px;
+    padding: 20px 14px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background: #ffffff;
+    min-height: 200px;
+}
+
+.php-card-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.php-card img {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+}
+
+.php-price {
+    font-size: 14px;
+    font-weight: 800;
+    color: #2a6496;
+}
+
+/* أزرار الـ Add المحددة في المنتصف تماماً */
+.php-add-btn {
+    background-color: #5b87b8;
+    color: #ffffff;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 0;
+    width: 85px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.15s;
+}
+
+.php-add-btn:hover {
+    background-color: #426f9d;
+}
+
+/* الكارت المخصص الكحلي الداكن */
+.php-add-btn.special-btn {
+    background-color: #0c1a30;
+}
+
+.php-add-btn.special-btn:hover {
+    background-color: #16263f;
+}
+
+/* كلاس التثبيت عند الاختيار الناجح والتحول للأخضر */
+.php-add-btn.added {
+    background-color: #2e7d32 !important;
+}
+
+/* --- الفوتر السفلي --- */
+.ph-footer {
+    background-color: #4e82a6;
+    padding: 45px 5%;
+    text-align: center;
+    color: #ffffff;
+    width: 100%;
+}
+
+.ph-footer p {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.7;
+    margin-bottom: 25px;
+}
+
+.gplay-wrapper {
+    display: inline-block;
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 6px 16px;
+}
+
+.ph-gplay-btn img {
+    height: 36px;
+}
+
+/* التجاوب المرن لشاشات التابلت والموبايل */
+@media (max-width: 1024px) {
+    .php-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 640px) {
+    .php-grid { grid-template-columns: repeat(2, 1fr); }
+    .header-container { flex-direction: column; gap: 10px; text-align: center; }
+}

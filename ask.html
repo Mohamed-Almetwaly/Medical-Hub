@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Hub - FAQ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Mulish', sans-serif; }
+        .faq-header {
+            background-color: #0b1a32;
+            padding: 18px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-header-left h2 {
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 800;
+        }
+        .faq-header-left p {
+            color: #8c9baf;
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 4px;
+            line-height: 1.5;
+        }
+        .header-nav {
+            display: flex;
+            gap: 40px;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: #8c9baf;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .nav-item i { font-size: 22px; }
+        .nav-item:hover { color: #ffffff; }
+        .nav-item.active {
+            color: #ffffff;
+            border-bottom: 2px solid #ffffff;
+            padding-bottom: 2px;
+        }
+        .faq-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 22px 40px;
+            background: #f5f7fa;
+            border-bottom: 1px solid #e4e4e4;
+        }
+        .faq-search {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #ffffff;
+            border: 1px solid #dde4ed;
+            border-radius: 30px;
+            padding: 10px 20px;
+            flex: 0 0 420px;
+        }
+        .faq-search i { color: #8c9baf; font-size: 15px; }
+        .faq-search input {
+            border: none;
+            outline: none;
+            font-family: 'Mulish', sans-serif;
+            font-size: 14px;
+            color: #333;
+            width: 100%;
+            background: transparent;
+        }
+        .faq-search input::placeholder { color: #aab4c0; }
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+        }
+        .filter-btn {
+            padding: 9px 22px;
+            border-radius: 30px;
+            border: 1.5px solid #c9d6e3;
+            background: #ffffff;
+            color: #4a6078;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+        .filter-btn:hover { border-color: #4a7fc1; color: #4a7fc1; }
+        .filter-btn.active {
+            background-color: #4a6078;
+            color: #ffffff;
+            border-color: #4a6078;
+        }
+        .filter-arrow {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #8c9baf;
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+        .faq-main {
+            padding: 30px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            background: #f5f7fa;
+            min-height: calc(100vh - 160px);
+        }
+        .faq-card {
+            background: #ffffff;
+            border: 1.5px solid #d0dce8;
+            border-radius: 12px;
+            padding: 22px 28px 18px;
+            cursor: pointer;
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+        .faq-card:hover {
+            border-color: #4a7fc1;
+            box-shadow: 0 4px 16px rgba(74,127,193,0.08);
+        }
+        .faq-card h3 {
+            color: #1a4a7a;
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        .faq-card p {
+            color: #555;
+            font-size: 13.5px;
+            line-height: 1.7;
+            margin-bottom: 14px;
+        }
+        .faq-card-footer {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .tag {
+            background: #eef2f7;
+            border: 1px solid #c9d6e3;
+            color: #4a6078;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 5px 14px;
+            border-radius: 20px;
+        }
+        .doctor-name {
+            color: #4a7fc1;
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .faq-card.hidden { display: none; }
+    </style>
+</head>
+<body>
+    <header class="faq-header">
+        <div class="faq-header-left">
+            <h2>FAQ</h2>
+            <p>Quickly Browse frequently asked questions<br>and doctor's answers</p>
+        </div>
+        <nav class="header-nav">
+            <a href="ask.html" class="nav-item active">
+                <i class="fa-regular fa-circle-question"></i>
+                <span>Ask?</span>
+            </a>
+            <a href="my-activity.html" class="nav-item">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>My Activity</span>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <i class="fa-solid fa-user"></i>
+                <span>Profile</span>
+            </a>
+            <a href="alerts.html" class="nav-item">
+                <i class="fa-solid fa-bell"></i>
+                <span>Alerts</span>
+            </a>
+        </nav>
+    </header>
+    <div class="faq-toolbar">
+        <div class="faq-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="search-input" placeholder="Search for your question">
+        </div>
+        <div class="filter-tabs">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="Heart">Heart</button>
+            <button class="filter-btn" data-filter="Bone">Bone</button>
+            <button class="filter-btn" data-filter="Teeth">Teeth</button>
+            <button class="filter-btn" data-filter="Eye">Eyes</button>
+            <button class="filter-btn" data-filter="Skin">Skin</button>
+            <button class="filter-btn" data-filter="General">General</button>
+        </div>
+        <button class="filter-arrow">›</button>
+    </div>
+    <main class="faq-main" id="faq-list">
+        <div class="faq-card" data-category="Eye">
+            <h3>What are the causes of persistent eye redness?</h3>
+            <p>Redness can be due to inflammation, allergy, dryness, or strain. It is recommended to see an eye specialist if it lasts more than 48 hours.</p>
+            <div class="faq-card-footer">
+                <span class="tag">Eye</span>
+                <span class="doctor-name">— Dr. Sara Ahmed · Ophthalmologist</span>
+            </div>
+        </div>
+        <div class="faq-card" data-category="Bone">
+            <h3>How do I deal with knee pain while walking?</h3>
+            <p>Rest, reducing weight on the joint, strengthening exercises for the muscles around the knee, and consulting an orthopedic specialist to evaluate the condition and provide appropriate exercises.</p>
+            <div class="faq-card-footer">
+                <span class="tag">Bone</span>
+                <span class="doctor-name">— Dr. Karim Hussein · Orthopedic Surgery</span>
+            </div>
+        </div>
+        <div class="faq-card" data-category="Teeth">
+            <h3>What causes tooth sensitivity?</h3>
+            <p>Enamel erosion, exposed tooth roots, or a small cavity can cause sensitivity. Use a specialized toothpaste and schedule a check-up with the dentist.</p>
+            <div class="faq-card-footer">
+                <span class="tag">Teeth</span>
+                <span class="doctor-name">— Dr. Manal Samir · Dentist</span>
+            </div>
+        </div>
+        <div class="faq-card" data-category="Heart">
+            <h3>What are the symptoms of high blood pressure?</h3>
+            <p>Symptoms often do not appear clearly, but sometimes the patient may experience headaches, dizziness, or light nosebleeds. Therefore, it is recommended to monitor blood pressure regularly.</p>
+            <div class="faq-card-footer">
+                <span class="tag">Heart</span>
+                <span class="doctor-name">— Dr. Ahmed Ali · Cardiologist</span>
+            </div>
+        </div>
+        <div class="faq-card" data-category="Skin">
+            <h3>How can I treat dry skin in winter?</h3>
+            <p>Use a moisturizer immediately after showering, avoid hot water, drink plenty of fluids, and consult a dermatologist if dryness is severe or accompanied by itching.</p>
+            <div class="faq-card-footer">
+                <span class="tag">Skin</span>
+                <span class="doctor-name">— Dr. Nour Hassan · Dermatologist</span>
+            </div>
+        </div>
+        <div class="faq-card" data-category="General">
+            <h3>When should I go to the emergency room?</h3>
+            <p>Go immediately if you experience chest pain, difficulty breathing, sudden loss of consciousness, severe bleeding, or stroke symptoms such as facial drooping or arm weakness.</p>
+            <div class="faq-card-footer">
+                <span class="tag">General</span>
+                <span class="doctor-name">— Dr. Mohamed Fathi · Emergency Medicine</span>
+            </div>
+        </div>
+    </main>
+    <script>
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const cards = document.querySelectorAll('.faq-card');
+        const searchInput = document.getElementById('search-input');
+        function applyFilters() {
+            const activeFilter = document.querySelector('.filter-btn.active')?.dataset.filter || 'all';
+            const searchVal = searchInput.value.toLowerCase().trim();
+            cards.forEach(card => {
+                const category = card.dataset.category;
+                const text = card.innerText.toLowerCase();
+                const matchFilter = activeFilter === 'all' || category === activeFilter;
+                const matchSearch = searchVal === '' || text.includes(searchVal);
+                card.classList.toggle('hidden', !(matchFilter && matchSearch));
+            });
+        }
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                applyFilters();
+            });
+        });
+        searchInput.addEventListener('input', applyFilters);
+    </script>
+</body>
+</html>

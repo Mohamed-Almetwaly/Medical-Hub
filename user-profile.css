@@ -1,0 +1,147 @@
+/* === user-profile.css === */
+
+:root {
+    --bg-main: #f0f4f8;
+    --bg-card: #ffffff;
+    --text-main: #333333;
+    --text-muted: #aaa;
+    --primary-color: #0b1a32;
+    --accent-color: #2c5b96;
+    --border-color: #e8edf2;
+}
+
+body.dark-mode {
+    --bg-main: #121212;
+    --bg-card: #1e1e1e;
+    --text-main: #f0f0f0;
+    --text-muted: #888;
+    --primary-color: #ffffff;
+    --accent-color: #4a7fc1;
+    --border-color: #333333;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Mulish', sans-serif;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* ===== HEADER ===== */
+.inner-header {
+    background-color: #0b1a32; /* يظل ثابت كما في التصميم */
+    padding: 12px 40px;
+    color: white;
+}
+
+.inner-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.header-left { display: flex; align-items: center; gap: 14px; }
+
+.avatar-circle {
+    width: 45px; height: 45px; border-radius: 50%;
+    background: #4a7fc1; display: flex; align-items: center; justify-content: center;
+}
+
+.greeting-text { display: flex; flex-direction: column; }
+.hello-text { font-size: 15px; font-weight: 800; }
+.wish-text { font-size: 13px; color: #8fa8c8; }
+
+.header-right-icons { display: flex; gap: 30px; }
+.icon-item { 
+    display: flex; flex-direction: column; align-items: center; 
+    gap: 5px; color: #8fa8c8; text-decoration: none; font-size: 12px;
+}
+.icon-item svg { width: 24px; height: 24px; }
+.icon-item.active-link { color: #fff; }
+
+/* ===== MAIN ===== */
+.profile-main { max-width: 900px; margin: 30px auto; padding: 0 24px; }
+.welcome-section { margin-bottom: 20px; }
+.welcome-section h2 { color: var(--text-main); }
+
+/* ===== SETTINGS CARD ===== */
+.settings-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.setting-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 24px; border-bottom: 1px solid var(--border-color);
+}
+
+.setting-left { display: flex; align-items: center; gap: 15px; font-weight: 600; }
+.row-icon { width: 24px; color: var(--accent-color); }
+
+/* ===== INPUTS & SELECTS ===== */
+.custom-select {
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* ===== THEME BUTTONS ===== */
+.theme-buttons { display: flex; gap: 10px; background: var(--bg-main); padding: 4px; border-radius: 10px; }
+.theme-btn {
+    padding: 8px 20px; border-radius: 8px; border: none; cursor: pointer;
+    background: transparent; color: var(--text-muted); font-weight: 700;
+}
+.theme-btn.active-theme { background: var(--bg-card); color: var(--accent-color); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+
+/* ===== MODAL ===== */
+.modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5); z-index: 1000;
+    align-items: center; justify-content: center;
+}
+.modal-box {
+    background: var(--bg-card); padding: 30px; border-radius: 16px; width: 400px;
+}
+.modal-input {
+    width: 100%; padding: 12px; margin: 10px 0;
+    background: var(--bg-main); border: 1px solid var(--border-color);
+    border-radius: 8px; color: var(--text-main);
+}
+/* تحويل العناصر لتبدو كأزرار عند الضغط */
+.setting-item.clickable {
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.setting-item.clickable:hover {
+    background-color: #f7f9fb; /* لون خفيف عند المرور */
+}
+
+body.dark-mode .setting-item.clickable:hover {
+    background-color: #2a2a2a;
+}
+
+/* تنسيق النافذة المنبثقة (Modal) */
+.modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5); align-items: center; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+
+.modal-box {
+    background: white; padding: 20px; border-radius: 12px; width: 300px;
+}

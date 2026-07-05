@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Medical Hub - Labs Marketplace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="laboratory.css">
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <style>
+        body { background-color: #fcfcfc; font-family: 'Mulish', sans-serif; margin: 0; }
+
+        /* البانر العلوي الداكن */
+        .blue-header-section { background-color: #0b1a32; color: white; text-align: center; padding: 40px 20px; }
+        .blue-header-section p { font-size: 14px; margin: 0; opacity: 0.7; }
+        .blue-header-section h3 { font-size: 20px; margin: 8px 0 18px 0; font-weight: 700; }
+
+        /* بانر الخصم اللبني */
+        .promo-banner-light {
+            background-color: #bdd3f1; color: #0b1a32; display: inline-flex;
+            align-items: center; gap: 12px; padding: 12px 35px; border-radius: 12px;
+            font-weight: 800; font-size: 16px;
+        }
+
+        .discount-icon { width: 24px; height: auto; }
+
+        /* شبكة المعامل */
+        .labs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; padding: 40px 8%; }
+
+        .lab-vendor-card {
+            background: #fff; border: 1px solid #eef2f6; border-radius: 15px;
+            padding: 25px; display: flex; justify-content: space-between;
+            align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.04); transition: 0.3s ease;
+        }
+
+        .lab-vendor-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+
+        /* Selected state */
+        .lab-vendor-card.selected {
+            border: 2px solid #0b1a32;
+            background: #f0f5fc;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(11,26,50,0.12);
+        }
+
+        .choose-btn.selected-state {
+            background: #0b1a32;
+            color: white;
+        }
+
+        /* زر المتابعة السفلي */
+        .continue-bar {
+            display: none;
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: white;
+            padding: 20px 8%;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+            z-index: 100;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .continue-bar.visible { display: flex; }
+        .selected-lab-preview { display: flex; align-items: center; gap: 15px; }
+        .selected-lab-preview img { width: 45px; height: 45px; object-fit: contain; }
+        .selected-lab-preview span { font-weight: 800; font-size: 16px; color: #0b1a32; }
+        .continue-btn {
+            background: #0b1a32; color: white; border: none;
+            padding: 14px 50px; border-radius: 12px;
+            font-weight: 800; font-size: 16px; cursor: pointer;
+            transition: 0.2s;
+        }
+        .continue-btn:hover { background: #1a2e4a; }
+
+        .vendor-info { display: flex; align-items: center; gap: 20px; }
+        .vendor-logo { width: 65px; height: 65px; object-fit: contain; }
+        .vendor-info h4 { color: #0b1a32; margin: 0; font-weight: 700; font-size: 17px; }
+
+        .choose-btn {
+            background: #eef2f6; border: none; padding: 10px 30px; border-radius: 10px;
+            font-weight: 800; color: #0b1a32; cursor: pointer; transition: 0.2s;
+        }
+
+        .choose-btn:hover { background: #0b1a32; color: white; }
+    </style>
+</head>
+<body>
+
+    <div class="blue-header-section">
+        <p>Searching in</p>
+        <h3 id="location-title">Cairo , El-Shorouk</h3>
+        <div class="promo-banner-light">
+            <img src="assets/images/Discount.png" alt="Discount" class="discount-icon">
+            Discounts up to 70%
+        </div>
+    </div>
+
+    <div class="labs-grid">
+        <div class="lab-vendor-card" onclick="selectLab(this, 'Al Borg Labs', 'assets/images/Al Borg Labs.png')">
+            <div class="vendor-info">
+                <img src="assets/images/Al Borg Labs.png" class="vendor-logo">
+                <h4>Al Borg Labs</h4>
+            </div>
+            <button class="choose-btn">Choose</button>
+        </div>
+
+        <div class="lab-vendor-card" onclick="selectLab(this, 'Al Mokhtaber', 'assets/images/Al Mokhtaber.png')">
+            <div class="vendor-info">
+                <img src="assets/images/Al Mokhtaber.png" class="vendor-logo">
+                <h4>Al Mokhtaber</h4>
+            </div>
+            <button class="choose-btn">Choose</button>
+        </div>
+
+        <div class="lab-vendor-card" onclick="selectLab(this, 'Al Shams', 'assets/images/Al Shams.png')">
+            <div class="vendor-info">
+                <img src="assets/images/Al Shams.png" class="vendor-logo">
+                <h4>Al Shams</h4>
+            </div>
+            <button class="choose-btn">Choose</button>
+        </div>
+
+        <div class="lab-vendor-card" onclick="selectLab(this, 'Fast Care', 'assets/images/Fast Care.png')">
+            <div class="vendor-info">
+                <img src="assets/images/Fast Care.png" class="vendor-logo">
+                <h4>Fast Care</h4>
+            </div>
+            <button class="choose-btn">Choose</button>
+        </div>
+
+        <div class="lab-vendor-card" onclick="selectLab(this, 'Hassab Labs', 'assets/images/Hassab Labs.png')">
+            <div class="vendor-info">
+                <img src="assets/images/Hassab Labs.png" class="vendor-logo">
+                <h4>Hassab Labs</h4>
+            </div>
+            <button class="choose-btn">Choose</button>
+        </div>
+
+        <div class="lab-vendor-card" onclick="selectLab(this, 'Ansary Labs', 'assets/images/Ansary Labs.png')">
+            <div class="vendor-info">
+                <img src="assets/images/Ansary Labs.png" class="vendor-logo">
+                <h4>Ansary Labs</h4>
+            </div>
+            <button class="choose-btn">Choose</button>
+        </div>
+    </div>
+
+    <!-- Bottom Continue Bar -->
+    <div class="continue-bar" id="continue-bar">
+        <div class="selected-lab-preview">
+            <img id="preview-logo" src="" alt="">
+            <span id="preview-name"></span>
+        </div>
+        <button class="continue-btn" onclick="goToBooking()">Continue →</button>
+    </div>
+
+    <script>
+        // قراءة المدينة والمنطقة من localStorage
+        const city = localStorage.getItem('selectedCity') || '';
+        const district = localStorage.getItem('selectedDistrict') || '';
+        document.getElementById('location-title').textContent = city && district ? city + ' , ' + district : 'Select your location';
+
+        let selectedLabName = null;
+        let selectedLabLogo = null;
+
+        function selectLab(card, labName, labLogo) {
+            // شيل التحديد من كل الكروت
+            document.querySelectorAll('.lab-vendor-card').forEach(c => c.classList.remove('selected'));
+            document.querySelectorAll('.choose-btn').forEach(b => {
+                b.classList.remove('selected-state');
+                b.textContent = 'Choose';
+            });
+
+            // حدد الكارت المضغوط
+            card.classList.add('selected');
+            card.querySelector('.choose-btn').classList.add('selected-state');
+            card.querySelector('.choose-btn').textContent = '✓ Selected';
+
+            // حفظ الاختيار
+            selectedLabName = labName;
+            selectedLabLogo = labLogo;
+
+            // اظهر الـ bottom bar
+            const bar = document.getElementById('continue-bar');
+            bar.classList.add('visible');
+            document.getElementById('preview-logo').src = labLogo;
+            document.getElementById('preview-name').textContent = labName;
+        }
+
+        function goToBooking() {
+            if (!selectedLabName) return;
+            localStorage.setItem('selectedLabName', selectedLabName);
+            localStorage.setItem('selectedLabLogo', selectedLabLogo);
+            window.location.href = 'booking.html';
+        }
+    </script>
+
+</body>
+</html>

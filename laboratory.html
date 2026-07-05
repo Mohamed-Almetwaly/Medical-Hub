@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Hub - Laboratory</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="laboratory.css">
+    <link rel="icon" type="image/png" href="assets/images/logo.png">    
+</head>
+<body>
+
+    <header class="inner-header">
+        <div class="inner-header-container">
+            <div class="header-left">
+
+                <img src="assets/images/logo.png" alt="Logo" class="logo-img">
+                <span class="page-title">Medical Services</span>
+            </div>
+            <div class="header-right-icons">
+                <div class="icon-item"><img src="assets/images/ask.png" alt=""><span>Ask?</span></div>
+                <div class="icon-item"><img src="assets/images/myactivety.png" alt=""><span>My Activity</span></div>
+                <div class="icon-item"><img src="assets/images/profile.png" alt=""><span>Profile</span></div>
+                <div class="icon-item"><img src="assets/images/alert.png" alt=""><span>Alerts</span></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="lab-main-layout">
+        <aside class="sidebar">
+            <h3 class="sidebar-title">Choose the city</h3>
+            <ul class="city-list">
+
+                <li class="city-item active" id="cairo-item">
+                    <div class="city-header" onclick="toggleCity('cairo-item', 'cairo-districts', 'cairo-arrow')">
+                        Cairo <span class="city-arrow" id="cairo-arrow">∧</span>
+                    </div>
+                    <ul class="districts-list" id="cairo-districts">
+                        <li onclick="selectDistrict(this)">Nasr City</li>
+                        <li onclick="selectDistrict(this)">Heliopolis</li>
+                        <li onclick="selectDistrict(this)">El Shorouk City</li>
+                        <li onclick="selectDistrict(this)">Madinty</li>
+                        <li onclick="selectDistrict(this)">Zamalek</li>
+                        <li onclick="selectDistrict(this)">Ain Shams</li>
+                    </ul>
+                </li>
+
+                <li class="city-item" id="giza-item">
+                    <div class="city-header" onclick="toggleCity('giza-item', 'giza-districts', 'giza-arrow')">
+                        Giza <span class="city-arrow" id="giza-arrow">›</span>
+                    </div>
+                    <ul class="districts-list" id="giza-districts" style="display:none">
+                        <li onclick="selectDistrict(this)">Dokki</li>
+                        <li onclick="selectDistrict(this)">Mohandessin</li>
+                        <li onclick="selectDistrict(this)">Haram</li>
+                        <li onclick="selectDistrict(this)">6th of October</li>
+                    </ul>
+                </li>
+
+                <li class="city-item" id="alex-item">
+                    <div class="city-header" onclick="toggleCity('alex-item', 'alex-districts', 'alex-arrow')">
+                        Alexandria <span class="city-arrow" id="alex-arrow">›</span>
+                    </div>
+                    <ul class="districts-list" id="alex-districts" style="display:none">
+                        <li onclick="selectDistrict(this)">Smouha</li>
+                        <li onclick="selectDistrict(this)">Montaza</li>
+                        <li onclick="selectDistrict(this)">Sidi Gaber</li>
+                        <li onclick="selectDistrict(this)">Miami</li>
+                    </ul>
+                </li>
+
+                <li class="city-item" id="portsaid-item">
+                    <div class="city-header" onclick="toggleCity('portsaid-item', 'portsaid-districts', 'portsaid-arrow')">
+                        Port Said <span class="city-arrow" id="portsaid-arrow">›</span>
+                    </div>
+                    <ul class="districts-list" id="portsaid-districts" style="display:none">
+                        <li onclick="selectDistrict(this)">El Arab</li>
+                        <li onclick="selectDistrict(this)">El Manakh</li>
+                        <li onclick="selectDistrict(this)">El Zohour</li>
+                    </ul>
+                </li>
+
+                <li class="city-item" id="suez-item">
+                    <div class="city-header" onclick="toggleCity('suez-item', 'suez-districts', 'suez-arrow')">
+                        Suez <span class="city-arrow" id="suez-arrow">›</span>
+                    </div>
+                    <ul class="districts-list" id="suez-districts" style="display:none">
+                        <li onclick="selectDistrict(this)">El Arbeen</li>
+                        <li onclick="selectDistrict(this)">Faisal</li>
+                        <li onclick="selectDistrict(this)">El Attaka</li>
+                    </ul>
+                </li>
+
+                <li class="city-item" id="sinai-item">
+                    <div class="city-header" onclick="toggleCity('sinai-item', 'sinai-districts', 'sinai-arrow')">
+                        Sinai <span class="city-arrow" id="sinai-arrow">›</span>
+                    </div>
+                    <ul class="districts-list" id="sinai-districts" style="display:none">
+                        <li onclick="selectDistrict(this)">Arish</li>
+                        <li onclick="selectDistrict(this)">Sharm El Sheikh</li>
+                        <li onclick="selectDistrict(this)">Dahab</li>
+                    </ul>
+                </li>
+
+                <li class="city-item" id="benisuef-item">
+                    <div class="city-header" onclick="toggleCity('benisuef-item', 'benisuef-districts', 'benisuef-arrow')">
+                        Beni Suef <span class="city-arrow" id="benisuef-arrow">›</span>
+                    </div>
+                    <ul class="districts-list" id="benisuef-districts" style="display:none">
+                        <li onclick="selectDistrict(this)">El Wasta</li>
+                        <li onclick="selectDistrict(this)">Nasser</li>
+                        <li onclick="selectDistrict(this)">Somosta</li>
+                    </ul>
+                </li>
+
+                <li class="city-item" id="assiut-item">
+                    <div class="city-header" onclick="toggleCity('assiut-item', 'assiut-districts', 'assiut-arrow')">
+                        Assiut <span class="city-arrow" id="assiut-arrow">›</span>
+                    </div>
+                    <ul class="districts-list" id="assiut-districts" style="display:none">
+                        <li onclick="selectDistrict(this)">El Hamra</li>
+                        <li onclick="selectDistrict(this)">Sahel Selim</li>
+                        <li onclick="selectDistrict(this)">Dairout</li>
+                    </ul>
+                </li>
+
+                <li class="city-item" id="luxor-item">
+                    <div class="city-header" onclick="toggleCity('luxor-item', 'luxor-districts', 'luxor-arrow')">
+                        Luxor <span class="city-arrow" id="luxor-arrow">›</span>
+                    </div>
+                    <ul class="districts-list" id="luxor-districts" style="display:none">
+                        <li onclick="selectDistrict(this)">El Karnak</li>
+                        <li onclick="selectDistrict(this)">Esna</li>
+                        <li onclick="selectDistrict(this)">New Luxor</li>
+                    </ul>
+                </li>
+
+                <li class="city-item" id="aswan-item">
+                    <div class="city-header" onclick="toggleCity('aswan-item', 'aswan-districts', 'aswan-arrow')">
+                        Aswan <span class="city-arrow" id="aswan-arrow">›</span>
+                    </div>
+                    <ul class="districts-list" id="aswan-districts" style="display:none">
+                        <li onclick="selectDistrict(this)">Edfu</li>
+                        <li onclick="selectDistrict(this)">Kom Ombo</li>
+                        <li onclick="selectDistrict(this)">Abu Simbel</li>
+                    </ul>
+                </li>
+
+            </ul>
+        </aside>
+
+        <main class="lab-content">
+            <div class="search-container">
+                <input type="text" placeholder="Choose a city and district" class="lab-search-input" id="main-search">
+            </div>
+
+            <div class="lab-cards-list">
+                <div class="lab-item-card" onclick="location.href='labs_details.html'">
+                    <div class="lab-item-left">
+                        <div class="lab-icon-circle"><img src="assets/images/lap.png" alt="Labs"></div>
+                        <div class="lab-item-info">
+                            <h4>Labs</h4>
+                            <p>sampling collection at labs marketplace</p>
+                        </div>
+                    </div>
+                    <div class="lab-item-right"><span class="go-arrow">›</span></div>
+                </div>
+
+                <div class="lab-item-card" onclick="location.href='home_sampling_details.html'">
+                    <div class="lab-item-left">
+                        <div class="lab-icon-circle"><img src="assets/images/home sampling.png" alt="Home Sampling"></div>
+                        <div class="lab-item-info">
+                            <h4>Home Sampling</h4>
+                            <p>sampling collection at home</p>
+                        </div>
+                    </div>
+                    <div class="lab-item-right"><span class="go-arrow">›</span></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        window.onload = function() {
+            // امسح أي اختيار قديم عشان المستخدم يبدأ من أول وجديد
+            localStorage.removeItem('selectedCity');
+            localStorage.removeItem('selectedDistrict');
+        };
+        function toggleCity(itemId, districtsId, arrowId) {
+            const allItems = document.querySelectorAll('.city-item');
+            const allDistricts = document.querySelectorAll('.districts-list');
+            const clickedItem = document.getElementById(itemId);
+            const clickedDistricts = document.getElementById(districtsId);
+            const isOpen = clickedDistricts.style.display === 'block';
+
+            // اغلق الكل
+            allItems.forEach(i => i.classList.remove('active'));
+            allDistricts.forEach(d => d.style.display = 'none');
+            document.querySelectorAll('.city-arrow').forEach(a => a.textContent = '›');
+
+            // لو مش مفتوح افتحه
+            if (!isOpen) {
+                clickedItem.classList.add('active');
+                clickedDistricts.style.display = 'block';
+                document.getElementById(arrowId).textContent = '∧';
+            }
+        }
+
+        function selectDistrict(el) {
+            // شيل التحديد من كل المناطق
+            document.querySelectorAll('.districts-list li').forEach(li => {
+                li.classList.remove('selected-district', 'focused-city');
+            });
+            // حدد المنطقة اللي اتضغط عليها
+            el.classList.add('selected-district');
+            // اسم المنطقة
+            const districtName = el.textContent.trim();
+            // اسم المدينة من الـ city-header الأب
+            const cityHeader = el.closest('.city-item').querySelector('.city-header');
+            const cityName = cityHeader.childNodes[0].textContent.trim();
+            // حفظ في localStorage
+            localStorage.setItem('selectedCity', cityName);
+            localStorage.setItem('selectedDistrict', districtName);
+            // غير placeholder بتاع البحث
+            document.getElementById('main-search').placeholder = 'Search in ' + districtName;
+        }
+    </script>
+</body>
+</html>

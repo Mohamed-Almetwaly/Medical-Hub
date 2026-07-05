@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Clinic Booking</title>
+<link rel="icon" type="image/png" href="assets/images/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+font-family: 'Mulish', sans-serif;
+background: #1a1a2e;
+height: 100vh;
+display: flex;
+flex-direction: column;
+}
+.top-header {
+background: #0b1a32;
+color: #4a9fd4;
+font-size: 15px;
+font-weight: 700;
+padding: 10px 20px;
+flex-shrink: 0;
+}
+.page-wrapper {
+display: flex;
+flex: 1;
+overflow: hidden;
+border: 2px solid #2a6496;
+background: #fff;
+}
+.sidebar {
+width: 280px;
+min-width: 280px;
+background: #e8edf2;
+display: flex;
+flex-direction: column;
+border-right: 1px solid #c8d4de;
+overflow-y: auto;
+}
+.sidebar-header {
+padding: 16px 20px 12px;
+border-bottom: 1px solid #c8d4de;
+position: sticky;
+top: 0;
+background: #e8edf2;
+z-index: 10;
+}
+.sidebar-header h2 {
+font-size: 14px;
+font-weight: 700;
+color: #2a6496;
+}
+.city-item { border-bottom: 1px solid #d0dae4; }
+.city-row {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 12px 20px;
+cursor: pointer;
+font-size: 14px;
+font-weight: 700;
+color: #0b1a32;
+transition: background 0.15s;
+}
+.city-row:hover { background: #d6e2ed; }
+.city-row.active { background: #b8d0e8; color: #0b1a32; }
+.city-row .arrow {
+font-size: 13px;
+color: #6b8fa8;
+transition: transform 0.2s;
+}
+.city-row.open .arrow { transform: rotate(90deg); }
+.districts {
+display: none;
+background: #dde6ef;
+padding: 6px 0;
+}
+.districts.open { display: block; }
+.district-item {
+display: flex;
+align-items: center;
+gap: 10px;
+padding: 8px 28px;
+font-size: 13px;
+font-weight: 600;
+color: #0b1a32;
+cursor: pointer;
+transition: background 0.15s;
+}
+.district-item:hover { background: #c8d8e8; }
+.district-item::before {
+content: '';
+width: 7px;
+height: 7px;
+border-radius: 50%;
+background: #5b87b8;
+flex-shrink: 0;
+}
+.district-item.active { color: #2a6496; }
+.district-item.active::before { background: #2a6496; }
+.content {
+flex: 1;
+background: #fff;
+display: flex;
+flex-direction: column;
+overflow-y: auto;
+padding: 20px 28px;
+}
+.search-bar {
+display: flex;
+align-items: center;
+gap: 10px;
+background: #f0f4f8;
+border-radius: 30px;
+padding: 9px 18px;
+margin-bottom: 22px;
+border: 1px solid #dde6ef;
+}
+.search-bar input {
+border: none;
+background: transparent;
+font-size: 13px;
+color: #555;
+width: 100%;
+outline: none;
+font-family: 'Mulish', sans-serif;
+}
+.section-title {
+font-size: 16px;
+font-weight: 800;
+color: #0b1a32;
+margin-bottom: 3px;
+}
+
+.section-sub {
+font-size: 12px;
+color: #888;
+margin-bottom: 16px;
+}
+
+.hospitals-list {
+display: flex;
+flex-direction: column;
+gap: 12px;
+}
+
+.hospital-card {
+display: flex;
+align-items: center;
+gap: 14px;
+background: #b8cfe8;
+border-radius: 12px;
+padding: 14px 18px;
+cursor: pointer;
+transition: background 0.2s;
+}
+
+.hospital-card:hover { background: #a0bcd8; }
+
+.hospital-icon {
+width: 40px;
+height: 40px;
+background: #2a6496;
+border-radius: 8px;
+display: flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+}
+
+.hospital-info { flex: 1; }
+
+.hospital-name {
+font-size: 13px;
+font-weight: 800;
+color: #0b1a32;
+margin-bottom: 2px;
+}
+
+.hospital-meta {
+font-size: 11px;
+color: #2a4a6a;
+line-height: 1.5;
+margin-bottom: 4px;
+}
+
+.hospital-rating {
+display: flex;
+align-items: center;
+gap: 4px;
+font-size: 11px;
+color: #2a4a6a;
+font-weight: 600;
+}
+
+.star { color: #f5a623; }
+
+.empty-state {
+flex: 1;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+color: #bbb;
+gap: 12px;
+}
+
+.empty-state p { font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="page-wrapper">
+<aside class="sidebar">
+<div class="sidebar-header">
+<h2>Choose the city</h2>
+</div>
+<div id="cityList"></div>
+</aside>
+<main class="content" id="contentArea">
+<div class="empty-state">
+<svg width="40" height="40" fill="none" stroke="#ccc" stroke-width="1.5" viewBox="0 0 24 24">
+<path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/>
+</svg>
+<p>Choose a city to see nearby hospitals</p>
+</div>
+</main>
+</div>
+<script>
+const data = {
+Cairo: {
+districts: ['Nasr City', 'Heliopolis', 'El Shorouk City', 'Madinty', 'Zamalek', 'Ain Shams'],
+hospitals: [
+{ name: 'El Shorouk Specialized Hospital', dist: '1.2km away', status: 'Open now + 24/7 Emergency', rating: '4.5', reviews: '250' },
+{ name: 'The British Hospital – El Shorouk', dist: '1.2km away', status: 'Open now + 24/7 Emergency', rating: '4.3', reviews: '210' },
+{ name: 'The Swiss Hospital – El Shorouk', dist: '1.2km away', status: 'Open now + 24/7 Emergency', rating: '4.5', reviews: '250' },
+{ name: 'Noor El Shorouk Hospital', dist: '1.2km away', status: 'Open now + 24/7 Emergency', rating: '4.5', reviews: '250' },
+{ name: 'General Hospital – Elshorouk', dist: '1.2km away', status: 'Open now + 24/7 Emergency', rating: '4.5', reviews: '250' },
+]
+},
+Giza: {
+districts: ['Dokki', 'Mohandessin', 'Haram', '6th of October', 'Sheikh Zayed'],
+hospitals: [
+{ name: 'Giza Medical Center', dist: '0.8km away', status: 'Open now + 24/7 Emergency', rating: '4.2', reviews: '180' },
+{ name: 'Al Salam Hospital – Giza', dist: '1.5km away', status: 'Open now + 24/7 Emergency', rating: '4.4', reviews: '190' },
+]
+},
+Alexandria: {
+districts: ['Smouha', 'Sidi Bishr', 'Montaza', 'Stanley', 'Agami'],
+hospitals: [
+{ name: 'Alexandria University Hospital', dist: '2.1km away', status: 'Open now + 24/7 Emergency', rating: '4.6', reviews: '320' },
+{ name: 'El Madina Hospital', dist: '1.0km away', status: 'Open now + 24/7 Emergency', rating: '4.1', reviews: '150' },
+]
+},
+'Port Said': { districts: ['Port Fouad', 'El Arab', 'El Zohour'], hospitals: [{ name: 'Port Said General Hospital', dist: '1.0km away', status: 'Open now', rating: '4.0', reviews: '100' }] },
+Suez: { districts: ['El Arbeen', 'Faisal', 'El Ganayen'], hospitals: [{ name: 'Suez Canal Hospital', dist: '1.3km away', status: 'Open now', rating: '4.1', reviews: '120' }] },
+Sinai: { districts: ['Sharm El Sheikh', 'Dahab', 'Nuweiba'], hospitals: [{ name: 'South Sinai Hospital', dist: '2.5km away', status: 'Open now', rating: '3.9', reviews: '80' }] },
+'Beni Suef': { districts: ['Beni Suef City', 'Nasser', 'El Fashn'], hospitals: [{ name: 'Beni Suef University Hospital', dist: '0.9km away', status: 'Open now', rating: '4.0', reviews: '90' }] },
+Assiut: { districts: ['Assiut City', 'Dairut', 'Manfalut'], hospitals: [{ name: 'Assiut University Hospital', dist: '1.1km away', status: 'Open now + 24/7 Emergency', rating: '4.3', reviews: '200' }] },
+Luxor: { districts: ['Luxor City', 'Karnak', 'New Luxor'], hospitals: [{ name: 'Luxor International Hospital', dist: '1.8km away', status: 'Open now', rating: '4.2', reviews: '130' }] },
+Aswan: { districts: ['Aswan City', 'Kom Ombo', 'Edfu'], hospitals: [{ name: 'Aswan General Hospital', dist: '1.4km away', status: 'Open now', rating: '4.0', reviews: '110' }] },
+};
+let activeCity = null;
+let activeDistrict = null;
+function hospitalIconSVG() {
+return `<svg width="20" height="20" fill="none" stroke="white" stroke-width="1.8" viewBox="0 0 24 24">
+<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/>
+</svg>`;
+}
+function renderContent(city, district) {
+const hospitals = data[city].hospitals;
+const placeholder = district ? `Research in ${district}` : `Research in ${city}`;
+document.getElementById('contentArea').innerHTML = `
+<div class="search-bar">
+<svg width="16" height="16" fill="none" stroke="#aaa" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+<input type="text" placeholder="${placeholder}" />
+</div>
+<p class="section-title">Nearby hospitals</p>
+<p class="section-sub">Choose the specialty you need</p>
+<div class="hospitals-list">
+${hospitals.map(h => `
+<div class="hospital-card" onclick="goToClinic('${h.name}','${h.dist}','${h.rating}','${h.reviews}')" style="cursor:pointer;">
+<div class="hospital-icon">${hospitalIconSVG()}</div>
+<div class="hospital-info">
+<p class="hospital-name">${h.name}</p>
+<p class="hospital-meta">${h.dist}<br>${h.status}</p>
+<div class="hospital-rating"><span class="star">★</span> ${h.rating} (${h.reviews} reviews)</div>
+</div>
+</div>
+`).join('')}
+</div>
+`;
+}
+function buildSidebar() {
+document.getElementById('cityList').innerHTML = Object.keys(data).map(city => {
+const key = city.replace(/\s/g, '_');
+return `
+<div class="city-item" id="city-${key}">
+<div class="city-row" onclick="toggleCity('${city}')">
+<span>${city}</span>
+<span class="arrow">›</span>
+</div>
+<div class="districts" id="dist-${key}">
+${data[city].districts.map(d => `
+<div class="district-item" onclick="selectDistrict('${city}','${d}',event)">${d}</div>
+`).join('')}
+</div>
+</div>`;
+}).join('');
+}
+function toggleCity(city) {
+const key = city.replace(/\s/g, '_');
+const row = document.querySelector(`#city-${key} .city-row`);
+const dist = document.getElementById(`dist-${key}`);
+if (activeCity && activeCity !== city) {
+const pk = activeCity.replace(/\s/g, '_');
+document.querySelector(`#city-${pk} .city-row`).classList.remove('open', 'active');
+document.getElementById(`dist-${pk}`).classList.remove('open');
+}
+const isOpen = dist.classList.contains('open');
+row.classList.toggle('open', !isOpen);
+row.classList.toggle('active', !isOpen);
+dist.classList.toggle('open', !isOpen);
+activeCity = !isOpen ? city : null;
+activeDistrict = null;
+
+if (!isOpen) renderContent(city, null);
+}
+function selectDistrict(city, district, e) {
+document.querySelectorAll('.district-item').forEach(el => el.classList.remove('active'));
+e.target.classList.add('active');
+activeCity = city;
+activeDistrict = district;
+renderContent(city, district);
+}
+function goToClinic(name, dist, rating, reviews) {
+const params = new URLSearchParams({
+hospital: name,
+dist: dist,
+rating: rating,
+reviews: reviews,
+city: activeCity || '',
+district: activeDistrict || '',
+});
+window.location.href = `clinic-booking.html?${params.toString()}`;
+}
+buildSidebar();
+</script>
+</body>
+</html>

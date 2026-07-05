@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed - Medical Hub</title>
+    <link rel="icon" type="image/png" href="assets/images/logo.png">    
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Mulish', sans-serif;
+            background-color: #a3c2dc; /* اللون الأزرق السماوي المقتبس من الخلفية */
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .success-card {
+            background-color: #0b1a32; /* الكحلي الداكن المميّز للهيدر */
+            color: #ffffff;
+            border-radius: 16px;
+            padding: 40px 60px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            max-width: 600px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .success-text {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            line-height: 1.4;
+        }
+
+        .delivery-icon {
+            font-size: 28px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        /* تأثير الأنيميشن عند ظهور البطاقة */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* التجاوب مع الشاشات الصغيرة */
+        @media (max-width: 480px) {
+            .success-card {
+                padding: 30px 20px;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .success-text {
+                font-size: 19px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="success-card">
+        <p class="success-text">
+            Your order will arrive 
+            <span class="delivery-icon">🛵</span>
+            <br>within 35 minutes
+        </p>
+    </div>
+
+    <script>
+        // التوجيه التلقائي إلى صفحة الخدمات بعد 4 ثوانٍ
+        setTimeout(() => {
+            window.location.href = 'services.html';
+        }, 4000); 
+    </script>
+
+</body>
+</html>
