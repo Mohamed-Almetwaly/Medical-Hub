@@ -450,12 +450,12 @@
     <script>
         // Firebase Config
         const firebaseConfig = {
-            apiKey: "AIzaSyDwTg3YH2t7Nf4kK5mL9p8oQ6rS2tU3vW",
+              apiKey: "AIzaSyCEMRrK9O0qH85qtI2JKMr632aphCyUnX8",
             authDomain: "medical-hub-77.firebaseapp.com",
             projectId: "medical-hub-77",
             storageBucket: "medical-hub-77.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123456789:web:abcdef1234567890"
+messagingSenderId: "247859944996",
+           appId: "1:247859944996:web:800aff8993b86ea78b82b1",
         };
 
         firebase.initializeApp(firebaseConfig);
